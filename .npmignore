@@ -1,0 +1,8 @@
+.idea
+node_modules
+.DS_Store
+npm_debug.log
+package-lock.json
+.vscode
+.editorconfig
+bin

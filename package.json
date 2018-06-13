@@ -1,0 +1,39 @@
+{
+  "name": "@lookinlab/adonis-lucid-filter",
+  "version": "1.0.0",
+  "description": "Addon for filtering AdonisJS Lucid ORM",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lookinlab/adonis-lucid-filter.git"
+  },
+  "keywords": [
+    "adonisjs",
+    "adonis-lucid",
+    "adonis-filter",
+    "adonis-lucid-filter"
+  ],
+  "author": "LookinGit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LookinGit/adonis-lucid-filter/issues"
+  },
+  "dependencies": {
+    "@adonisjs/generic-exceptions": "^2.0.1",
+    "debug": "^3.1.0"
+  },
+  "devDependencies": {
+    "@adonisjs/fold": "^4.0.8",
+    "@adonisjs/lucid": "^5.0.4",
+    "lodash": "^4.17.10",
+    "standard": "^11.0.1"
+  },
+  "standard": {
+    "globals": [
+      "use"
+    ]
+  }
+}
