@@ -82,10 +82,10 @@ Make sure to install it using `npm` or `yarn`.
 
 ```bash
 # npm
-npm i lookinlab/adonis-lucid-filter
+npm i @lookinlab/adonis-lucid-filter
 
 # yarn
-yarn add lookinlab/adonis-lucid-filter
+yarn add @lookinlab/adonis-lucid-filter
 ```
 
 ## Usage
