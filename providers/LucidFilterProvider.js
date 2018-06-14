@@ -17,7 +17,7 @@ class LucidFilterProvider extends ServiceProvider {
       const LucidFilter = require('../src/LucidFilter')
       return new LucidFilter()
     })
-    this.app.alias('Adonis/Addons/LucidFilter', 'Lucid/Filter')
+    this.app.alias('Adonis/Addons/LucidFilter', 'Filterable')
   }
 
   _registerCommand () {

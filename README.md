@@ -195,7 +195,7 @@ const UserFilter = use('App/ModelFilters/UserFilter')
 class User extends Model {
   static boot () {
     super.boot()
-    this.addTrait('@provider:Lucid/Filter', UserFilter)
+    this.addTrait('@provider:Filterable', UserFilter)
   }
 
   // User Class
