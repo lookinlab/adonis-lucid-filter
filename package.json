@@ -1,6 +1,6 @@
 {
-  "name": "@lookinlab/adonis-lucid-filter",
-  "version": "1.0.0-beta2",
+  "name": "adonis-lucid-filter",
+  "version": "1.0.0-beta3",
   "description": "Addon for filtering AdonisJS Lucid ORM",
   "main": "index.js",
   "scripts": {
