@@ -19,7 +19,7 @@
   "author": "LookinGit",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LookinGit/adonis-lucid-filter/issues"
+    "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
   "dependencies": {
     "@adonisjs/generic-exceptions": "^2.0.1",
