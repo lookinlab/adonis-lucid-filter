@@ -82,10 +82,10 @@ Make sure to install it using `npm` or `yarn`.
 
 ```bash
 # npm
-npm i @lookinlab/adonis-lucid-filter
+npm i adonis-lucid-filter
 
 # yarn
-yarn add @lookinlab/adonis-lucid-filter
+yarn add adonis-lucid-filter
 ```
 
 ## Usage
@@ -94,7 +94,7 @@ Make sure to register the provider inside `start/app.js` file.
 
 ```js
 const providers = [
-  '@lookinlab/adonis-lucid-filter/providers/LucidFilterProvider'
+  'adonis-lucid-filter/providers/LucidFilterProvider'
 ]
 ```
 
