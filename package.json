@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "@adonisjs/fold": "^4.0.8",
-    "@adonisjs/lucid": "^5.0.4",
     "lodash": "^4.17.10",
     "standard": "^11.0.1"
   },
