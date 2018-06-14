@@ -4,7 +4,11 @@
   "description": "Addon for filtering AdonisJS Lucid ORM",
   "main": "index.js",
   "scripts": {
-    "lint": "standard"
+    "lint": "standard",
+    "pretest": "npm run lint",
+    "test": "DB=sqlite nyc japa",
+    "posttest": "npm run coverage",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -26,13 +30,24 @@
     "debug": "^3.1.0"
   },
   "devDependencies": {
+    "@adonisjs/ace": "^5.0.2",
     "@adonisjs/fold": "^4.0.8",
+    "@adonisjs/lucid": "^5.0.4",
+    "@adonisjs/sink": "^1.0.16",
+    "coveralls": "^3.0.1",
+    "japa": "^1.0.6",
+    "japa-cli": "^1.0.1",
     "lodash": "^4.17.10",
+    "nyc": "^12.0.2",
+    "sqlite3": "^4.0.0",
     "standard": "^11.0.1"
   },
   "standard": {
     "globals": [
       "use"
     ]
+  },
+  "directories": {
+    "test": "test"
   }
 }
