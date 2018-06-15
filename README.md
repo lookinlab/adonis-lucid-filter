@@ -232,4 +232,3 @@ class UserController {
 ## TODO
 - add `setup` method
 - add relations filter
-- add tests
