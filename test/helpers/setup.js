@@ -45,6 +45,7 @@ module.exports = {
           table.string('email').unique()
           table.boolean('is_admin').default(false)
           table.string('password')
+          table.integer('company_id')
           table.timestamps()
         })
       })
