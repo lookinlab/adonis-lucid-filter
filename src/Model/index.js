@@ -29,6 +29,7 @@ class ModelFilter {
   constructor (query, input = {}) {
     this.$query = query
     this.$input = this._removeEmptyInput(input)
+    this.$blacklist = this.constructor.blacklist
   }
 
   /**
@@ -76,10 +77,10 @@ class ModelFilter {
    * @return {void}
    */
   whitelistMethod (method) {
-    const index = this.constructor.blacklist.indexOf(method)
+    const index = this.$blacklist.indexOf(method)
     if (!~index) return
 
-    this.constructor.blacklist.splice(index, 1)
+    this.$blacklist.splice(index, 1)
   }
 
   /**
@@ -185,7 +186,7 @@ class ModelFilter {
    * @return {Boolean}
    */
   _methodIsBlacklisted (method) {
-    return !!(~this.constructor.blacklist.indexOf(method))
+    return !!(~this.$blacklist.indexOf(method))
   }
 }
 module.exports = ModelFilter
