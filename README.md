@@ -185,7 +185,7 @@ setup () {
 
 ### Applying The Filter To A Model
 
-Implement the `@provider:Lucid\Filter` trait on any Lucid model:
+Implement the `@provider:Filterable` trait on any Lucid model:
 
 ```js
 'use strict'
