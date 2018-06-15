@@ -1,4 +1,7 @@
 # Adonis Lucid Filter
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
+
 > Works with @adonisjs/lucid 5.0.3 or greater.
 
 This addon adds the functionality to filter Lucid Models
