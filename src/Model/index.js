@@ -76,9 +76,10 @@ class ModelFilter {
    * @return {void}
    */
   whitelistMethod (method) {
-    this.constructor.blacklist = this.constructor.blacklist.filter((name) => {
-      return (name !== method)
-    })
+    const index = this.constructor.blacklist.indexOf(method)
+    if (!~index) return
+
+    this.constructor.blacklist.splice(index, 1)
   }
 
   /**
