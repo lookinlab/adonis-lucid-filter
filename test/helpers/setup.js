@@ -44,7 +44,7 @@ module.exports = {
           table.string('username').unique()
           table.string('email').unique()
           table.boolean('is_admin').default(false)
-          table.string('password').unique()
+          table.string('password')
           table.timestamps()
         })
       })
