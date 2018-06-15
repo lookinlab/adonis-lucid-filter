@@ -74,13 +74,13 @@ class ModelFilter {
    *
    * @param {String} method
    *
-   * @return {void}
+   * @return {Boolean}
    */
   whitelistMethod (method) {
     const index = this.$blacklist.indexOf(method)
-    if (!~index) return
+    if (~index) this.$blacklist.splice(index, 1)
 
-    this.$blacklist.splice(index, 1)
+    return (!!~index)
   }
 
   /**
