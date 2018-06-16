@@ -32,12 +32,6 @@ test.group('Make ModelFilter', (group) => {
     await new Command().removeDir(path.join(__dirname, './app'))
   })
 
-  test('define class getters', (assert) => {
-    assert.exists(MakeModelFilter.description)
-    assert.exists(MakeModelFilter.inject)
-    assert.exists(MakeModelFilter.signature)
-  })
-
   test('make a model filter class', async (assert) => {
     const make = new MakeModelFilter(new Helpers(path.join(__dirname)))
     await make.handle({ name: 'UserFilter' })

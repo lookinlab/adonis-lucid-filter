@@ -18,14 +18,17 @@ class MakeModelFilter extends Command {
     this.Helpers = Helpers
   }
 
+  /* istanbul ignore next */
   static get inject () {
     return ['Adonis/Src/Helpers']
   }
 
+  /* istanbul ignore next */
   static get signature () {
     return 'make:modelFilter { name: Name of the filter file }'
   }
 
+  /* istanbul ignore next */
   static get description () {
     return 'Create sample filter file'
   }
@@ -46,6 +49,7 @@ class MakeModelFilter extends Command {
       return this.generateFile(filterPath, template, { name })
     }
 
+    /* istanbul ignore next */
     try {
       await this.generateFile(filterPath, template, { name })
       this.completed('create', relativePath)
