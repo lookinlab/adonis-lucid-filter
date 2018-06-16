@@ -13,6 +13,7 @@ const test = require('japa')
 const setup = require('./helpers/setup')
 const { ioc } = require('@adonisjs/fold')
 const LucidFilter = require('../src/LucidFilter')
+const TestModelFilter = require('./filters/TestModelFilter')
 
 test.group('LucidFilter', (group) => {
   group.before(async () => {
@@ -39,12 +40,10 @@ test.group('LucidFilter', (group) => {
 
   test('exists filter method when define model filter and return QueryBuilder instance', (assert) => {
     const Model = use('Model')
-    const UserFilter = use('./filters/UserFilter')
-
     class User extends Model {
       static boot () {
         super.boot()
-        this.addTrait('@provider:Filterable', UserFilter)
+        this.addTrait('@provider:Filterable', TestModelFilter)
       }
     }
 

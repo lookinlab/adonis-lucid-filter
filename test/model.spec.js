@@ -12,6 +12,7 @@
 const test = require('japa')
 const setup = require('./helpers/setup')
 const ModelFilter = require('../src/Model')
+const TestModelFilter = require('./filters/TestModelFilter')
 
 test.group('ModelFilter', (group) => {
   let filter, input
@@ -108,15 +109,3 @@ test.group('ModelFilter', (group) => {
     assert.equal(result2, false)
   })
 })
-
-class TestModelFilter extends ModelFilter {
-  static get blacklist () {
-    return ['company']
-  }
-  username (username) {
-    return this.where('username', 'LIKE', `%${username}%`)
-  }
-  company (id) {
-    return this.where('company_id', +id)
-  }
-}
