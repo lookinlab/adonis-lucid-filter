@@ -7,7 +7,7 @@
 > Works with @adonisjs/lucid 5.0.3 or greater.
 
 This addon adds the functionality to filter Lucid Models
-> This is adaptation a [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter) for AdonisJS Lucid ORM
+> Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
 
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
