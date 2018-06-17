@@ -118,6 +118,7 @@ Where `User` is the Lucid Model you are creating the filter for. This will creat
 Define the filter logic based on the camel cased input key passed to the `filter()` method.
 
 - Empty strings are ignored
+- `setup()` will be called regardless of input
 - `_id` is dropped from the end of the input to define the method so filtering `user_id` would use the `user()` method
 - Input without a corresponding filter method are ignored
 - The value of the key is injected into the method
@@ -179,12 +180,14 @@ In the example above `secretMethod()` will not be called, even if there is a `se
 
 Example:
 ```js
-setup () {
+setup (filter) {
   const user = await auth.getUser()
 
   if (user.isAdmin()) {
-    this.whitelistMethod('secretMethod');
+    filter.whitelistMethod('secretMethod');
   }
+  
+  return this.where('is_admin', true);
 }
 ```
 
@@ -235,5 +238,4 @@ class UserController {
 ```
 
 ## TODO
-- add `setup` method
 - add relations filter

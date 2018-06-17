@@ -62,6 +62,10 @@ class ModelFilter {
    * @return {QueryBuilder}
    */
   handle () {
+    /* istanbul ignore next */
+    if (this.setup && typeof (this.setup) === 'function') {
+      this.setup.call(this.$query, this)
+    }
     this._filterInput()
 
     return this.$query
