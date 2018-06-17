@@ -1,8 +1,13 @@
 # Adonis Lucid Filter
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
+[![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
+
 > Works with @adonisjs/lucid 5.0.3 or greater.
 
 This addon adds the functionality to filter Lucid Models
-> This is adaptation a [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter) for AdonisJS Lucid ORM
+> Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
 
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
@@ -113,6 +118,7 @@ Where `User` is the Lucid Model you are creating the filter for. This will creat
 Define the filter logic based on the camel cased input key passed to the `filter()` method.
 
 - Empty strings are ignored
+- `setup()` will be called regardless of input
 - `_id` is dropped from the end of the input to define the method so filtering `user_id` would use the `user()` method
 - Input without a corresponding filter method are ignored
 - The value of the key is injected into the method
@@ -168,18 +174,20 @@ class UserFilter extends ModelFilter {
 
 Any methods defined in the `blackist` array will not be called by the filter. Those methods are normally used for internal filter logic.
 
-The `blacklistMethod()` and `whitelistMethod()` methods can be used to dynamically blacklist and whitelist methods.
+The `whitelistMethod()` methods can be used to dynamically blacklist methods.
 
 In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input array. In order to call this method it would need to be whitelisted dynamically:
 
 Example:
 ```js
-setup () {
+setup (filter) {
   const user = await auth.getUser()
 
   if (user.isAdmin()) {
-    this.whitelistMethod('secretMethod');
+    filter.whitelistMethod('secretMethod');
   }
+  
+  return this.where('is_admin', true);
 }
 ```
 
@@ -230,5 +238,4 @@ class UserController {
 ```
 
 ## TODO
-- add `setup` method
 - add relations filter
