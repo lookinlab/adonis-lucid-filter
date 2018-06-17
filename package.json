@@ -1,6 +1,6 @@
 {
   "name": "adonis-lucid-filter",
-  "version": "1.0.0-rc",
+  "version": "1.0.1",
   "description": "Addon for filtering AdonisJS Lucid ORM",
   "main": "index.js",
   "scripts": {
