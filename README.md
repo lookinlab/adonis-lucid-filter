@@ -173,7 +173,7 @@ class UserFilter extends ModelFilter {
 
 Any methods defined in the `blackist` array will not be called by the filter. Those methods are normally used for internal filter logic.
 
-The `blacklistMethod()` and `whitelistMethod()` methods can be used to dynamically blacklist and whitelist methods.
+The `whitelistMethod()` methods can be used to dynamically blacklist methods.
 
 In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input array. In order to call this method it would need to be whitelisted dynamically:
 
