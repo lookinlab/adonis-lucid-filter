@@ -237,5 +237,30 @@ class UserController {
 }
 ```
 
+### Dynamic Filters
+
+You can define the filter dynamically by passing the filter to use as the second parameter of the filter() method.
+Defining a filter dynamically will take precedent over any other filters defined for the model.
+
+```js
+'use strict'
+
+const AdminFilter = use('App/ModelFilters/AdminFilter')
+const UserFilter = use('App/ModelFilters/UserFilter')
+
+class UserController {
+
+  async index ({ request, auth }) {
+    const user = await auth.getUser()
+    const Filter = user.isAdmin() ? AdminFilter : UserFilter
+    
+    return await User.query()
+      .filter(request.all(), Filter)
+      .fetch();
+  }
+  
+}
+```
+
 ## TODO
 - add relations filter
