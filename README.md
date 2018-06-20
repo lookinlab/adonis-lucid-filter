@@ -109,7 +109,7 @@ const providers = [
 You can create a model filter with the following ace command:
 
 ```bash
-adonis make:modelFilter UserFilter
+adonis make:modelFilter User // or UserFilter
 ```
 
 Where `User` is the Lucid Model you are creating the filter for. This will create `app/ModelFilters/UserFilter.js`
@@ -123,7 +123,7 @@ Define the filter logic based on the camel cased input key passed to the `filter
 - Input without a corresponding filter method are ignored
 - The value of the key is injected into the method
 - All values are accessible through the `this.input()` method or a single value by key `this.input(key)`
-- All Query Builder methods are accessible in `this` context in the model filter class.
+- All QueryBuilder methods are accessible in `this` context in the model filter class.
 
 To define methods for the following input:
 
@@ -166,7 +166,7 @@ class UserFilter extends ModelFilter {
 }
 ```
 
-> **Note:**  In the above example if you do not want `_id` dropped from the end of the input you can set `static get dropId () { return false }` on your filter class. Doing this would allow you to have a `company()` filter method as well as a `companyId()` filter method.
+> **Note:** In the above example if you do not want `_id` dropped from the end of the input you can set `static get dropId () { return false }` on your filter class. Doing this would allow you to have a `company()` filter method as well as a `companyId()` filter method.
 
 > **Note:** In the example above all methods inside `setup()` will be called every time `filter()` is called on the model
 
@@ -180,7 +180,7 @@ In the example above `secretMethod()` will not be called, even if there is a `se
 
 Example:
 ```js
-setup (filter) {
+async setup (filter) {
   const user = await auth.getUser()
 
   if (user.isAdmin()) {
