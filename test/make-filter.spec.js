@@ -34,11 +34,17 @@ test.group('Make ModelFilter', (group) => {
 
   test('make a model filter class', async (assert) => {
     const make = new MakeModelFilter(new Helpers(path.join(__dirname)))
-    await make.handle({ name: 'UserFilter' })
 
+    // Name without word 'Filter'
+    await make.handle({ name: 'User' })
     const UserFilter = require(path.join(__dirname, './app/ModelFilters/UserFilter'))
 
+    // Name with word 'Filter'
+    await make.handle({ name: 'PostFilter' })
+    const PostFilter = require(path.join(__dirname, './app/ModelFilters/PostFilter'))
+
     assert.equal(UserFilter.name, 'UserFilter')
+    assert.equal(PostFilter.name, 'PostFilter')
     assert.instanceOf(new UserFilter(), ModelFilter)
   })
 

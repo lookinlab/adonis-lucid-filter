@@ -34,6 +34,9 @@ class MakeModelFilter extends Command {
   }
 
   async handle ({ name }) {
+    name = name.replace(/Filter$/g, '')
+    name += `Filter`
+
     /**
      * Reading template as a string form the mustache file
      */
