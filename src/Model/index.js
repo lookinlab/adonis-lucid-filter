@@ -36,6 +36,7 @@ class ModelFilter {
    * Drop `_id` from the end of input keys when referencing methods
    *
    * @method dropId
+   * @static
    *
    * @return {Boolean}
    */
@@ -47,6 +48,7 @@ class ModelFilter {
    * Array of method names that should not be called
    *
    * @method blacklist
+   * @static
    *
    * @return [String]
    */
