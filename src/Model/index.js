@@ -60,14 +60,13 @@ class ModelFilter {
    * Handle all filters
    *
    * @method handle
-   * @async
    *
-   * @return {Promise.<{QueryBuilder}>}
+   * @return {QueryBuilder}
    */
-  async handle () {
+  handle () {
     /* istanbul ignore next */
     if (this.setup && typeof (this.setup) === 'function') {
-      await this.setup.call(this.$query, this)
+      this.setup.call(this.$query, this)
     }
     this._filterInput()
 

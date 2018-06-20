@@ -180,16 +180,12 @@ In the example above `secretMethod()` will not be called, even if there is a `se
 
 Example:
 ```js
-async setup (filter) {
-  const user = await auth.getUser()
-
-  if (user.isAdmin()) {
-    filter.whitelistMethod('secretMethod');
-  }
-  
-  return this.where('is_admin', true);
+setup (filter) {
+  filter.whitelistMethod('secretMethod')
+  return this.where('is_admin', true)
 }
 ```
+> `setup()` not may be async
 
 ### Applying The Filter To A Model
 
