@@ -12,14 +12,19 @@
 const GE = require('@adonisjs/generic-exceptions')
 
 class LucidFilter {
-  register (Model, Filter) {
-    if (!Filter || typeof (Filter) !== 'function') {
-      throw GE.InvalidArgumentException.invalidParameter('Make sure to pass Filter as 2nd parameter to Filterable trait')
-    }
+  register (Model, ModelFilter) {
+    Model.ModelFilter = ModelFilter
 
-    Model.queryMacro('filter', function (inputs = {}) {
-      new Filter(this, inputs).handle()
-      return this
+    Model.queryMacro('filter', function (input = {}, Filter = null) {
+      Filter = Filter || Model.ModelFilter
+
+      if (typeof (Filter) !== 'function') {
+        throw GE
+          .InvalidArgumentException
+          .invalidParameter('Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
+      }
+      const modelFilter = new Filter(this, input)
+      return modelFilter.handle()
     })
   }
 }

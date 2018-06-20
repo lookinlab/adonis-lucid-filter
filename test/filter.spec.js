@@ -25,20 +25,21 @@ test.group('LucidFilter', (group) => {
     await setup.down()
   })
 
-  test('throw exception when Filter are not defined', (assert) => {
+  test('throw exception when ModelFilter are not defined', (assert) => {
     const Model = use('Model')
     class User extends Model {
       static boot () {
         super.boot()
-        this.addTrait('@provider:Filterable', null)
+        this.addTrait('@provider:Filterable')
       }
     }
+    User._bootIfNotBooted()
 
-    const fn = () => User._bootIfNotBooted()
-    assert.throw(fn, 'E_INVALID_PARAMETER: Make sure to pass Filter as 2nd parameter to Filterable trait')
+    const fn = () => User.query().filter()
+    assert.throws(fn, 'E_INVALID_PARAMETER: Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
   })
 
-  test('exists filter method when define model filter and return QueryBuilder instance', (assert) => {
+  test('exists filter method when define ModelFilter to Filterable trait', (assert) => {
     const Model = use('Model')
     class User extends Model {
       static boot () {
@@ -46,10 +47,21 @@ test.group('LucidFilter', (group) => {
         this.addTrait('@provider:Filterable', TestModelFilter)
       }
     }
-
     User._bootIfNotBooted()
 
-    assert.exists(User.query().filter)
-    assert.instanceOf(User.query().filter(), User.QueryBuilder)
+    assert.instanceOf(User.query().filter({}), User.QueryBuilder)
+  })
+
+  test('exists filter method when define ModelFilter to function filter', (assert) => {
+    const Model = use('Model')
+    class User extends Model {
+      static boot () {
+        super.boot()
+        this.addTrait('@provider:Filterable')
+      }
+    }
+    User._bootIfNotBooted()
+
+    assert.instanceOf(User.query().filter({}, TestModelFilter), User.QueryBuilder)
   })
 })
