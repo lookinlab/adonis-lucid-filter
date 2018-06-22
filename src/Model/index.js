@@ -78,7 +78,7 @@ class ModelFilter {
    * @method blacklist
    * @static
    *
-   * @return [String]
+   * @return String[]
    */
   static get blacklist () {
     return []
@@ -215,7 +215,7 @@ class ModelFilter {
    * @method _methodIsBlacklisted
    * @private
    *
-   * @param method
+   * @param {String} method
    *
    * @return {Boolean}
    */
