@@ -135,6 +135,28 @@ class ModelFilter {
   }
 
   /**
+   * Add a where constraint to a relationship
+   *
+   * @method related
+   *
+   * @param {String} relation
+   * @param {String} column
+   * @param {String|Number} operator
+   * @param {String|Number} value
+   *
+   * @return {QueryBuilder}
+   */
+  related (relation, column, operator, value = null) {
+    if (value === null) {
+      value = operator
+      operator = '='
+    }
+    return this.$query.whereHas(relation, (builder) => {
+      builder.where(column, operator, value)
+    })
+  }
+
+  /**
    * Filter with input object
    *
    * @method _filterInput

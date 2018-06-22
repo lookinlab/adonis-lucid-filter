@@ -39,7 +39,9 @@ module.exports = {
       ])
       .registerAndBoot()
       .then(() => {
-        return ioc.use('Database').schema.createTable('users', (table) => {
+        const schema = ioc.use('Database').schema
+
+        schema.createTable('users', (table) => {
           table.increments()
           table.string('username').unique()
           table.string('email').unique()
@@ -48,6 +50,24 @@ module.exports = {
           table.integer('company_id')
           table.timestamps()
         })
+        schema.createTable('industries', (table) => {
+          table.increments()
+          table.string('title')
+          table.integer('revenue')
+          table.timestamps()
+        })
+        schema.createTable('roles', (table) => {
+          table.increments()
+          table.string('title')
+          table.timestamps()
+        })
+        schema.createTable('industry_user', (table) => {
+          table.increments()
+          table.integer('user_id')
+          table.integer('industry_id')
+        })
+
+        return schema
       })
   },
 
@@ -56,6 +76,8 @@ module.exports = {
       .use('Database')
       .schema
       .dropTable('users')
+      .dropTable('industry_user')
+      .dropTable('industries')
       .then(() => {
         if (process.env.DB === 'sqlite') {
           fs.unlinkSync(path.join(__dirname, 'db.sqlite3'))
