@@ -16,15 +16,15 @@ const TestModelFilter = require('./filters/TestModelFilter')
 
 test.group('ModelFilter', (group) => {
   let filter, input
+  let User
 
   group.before(async () => {
     await setup.up()
+
+    User = require('./models/User')
   })
 
   group.beforeEach(() => {
-    const Model = use('Model')
-    class User extends Model {}
-
     User._bootIfNotBooted()
 
     input = {
@@ -62,15 +62,11 @@ test.group('ModelFilter', (group) => {
   })
 
   test('get filter method name in camelCase and with _id', (assert) => {
-    const Model = use('Model')
-    class User extends Model {}
     class UserFilter extends ModelFilter {
       static get dropId () {
         return false
       }
     }
-
-    User._bootIfNotBooted()
 
     const userFilter = new UserFilter(User.query())
     assert.equal(userFilter._getFilterMethod('company_id'), 'companyId')
@@ -89,11 +85,6 @@ test.group('ModelFilter', (group) => {
   })
 
   test('whitelist method and method is callable', (assert) => {
-    const Model = use('Model')
-    class User extends Model {}
-
-    User._bootIfNotBooted()
-
     const userFilter = new TestModelFilter(User.query(), input)
     userFilter.handle()
 
