@@ -266,6 +266,7 @@ A `App/Models/User` that `belongsToMany` `App/Models/Industry`
 'use strict'
 
 const Model = use('Model')
+const UserFilter = use('App/ModelFilters/UserFilter')
 
 class User extends Model {
   static boot () {
