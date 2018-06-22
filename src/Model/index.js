@@ -9,7 +9,35 @@
  * file that was distributed with this source code.
  */
 
-const camelCase = require('lodash/camelCase')
+const _ = require('lodash')
+
+/**
+ * Methods of query builder to be added
+ * to model filter
+ */
+const aggregates = [
+  'where',
+  'whereNot',
+  'whereIn',
+  'whereNotIn',
+  'whereNull',
+  'whereNotNull',
+  'whereExists',
+  'whereNotExists',
+  'whereBetween',
+  'whereNotBetween',
+  'whereRaw',
+  'whereHas',
+  'orWhereHas',
+  'whereDoesntHave',
+  'orWhereDoesntHave',
+  'with',
+  'withCount',
+  'has',
+  'orHas',
+  'doesntHave',
+  'orDoesntHave'
+]
 
 /**
  * ModelFilter class to filtering Adonis Lucid ORM
@@ -66,7 +94,7 @@ class ModelFilter {
   handle () {
     /* istanbul ignore next */
     if (this.setup && typeof (this.setup) === 'function') {
-      this.setup.call(this.$query, this)
+      this.setup(this.$query)
     }
     this._filterInput()
 
@@ -122,7 +150,7 @@ class ModelFilter {
       const value = input[key]
 
       if (this._methodIsCallable(method)) {
-        this[method].call(this.$query, value)
+        this[method](value)
       }
     }
   }
@@ -138,7 +166,7 @@ class ModelFilter {
    * @return {String}
    */
   _getFilterMethod (key) {
-    return camelCase(this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key)
+    return _.camelCase(this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key)
   }
 
   /**
@@ -195,4 +223,11 @@ class ModelFilter {
     return !!(~this.$blacklist.indexOf(method))
   }
 }
+
+aggregates.forEach((method) => {
+  ModelFilter.prototype[method] = function (...args) {
+    return this.$query[method](...args)
+  }
+})
+
 module.exports = ModelFilter

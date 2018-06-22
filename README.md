@@ -180,8 +180,8 @@ In the example above `secretMethod()` will not be called, even if there is a `se
 
 Example:
 ```js
-setup (filter) {
-  filter.whitelistMethod('secretMethod')
+setup ($query) {
+  this.whitelistMethod('secretMethod')
   return this.where('is_admin', true)
 }
 ```
