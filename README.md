@@ -44,17 +44,16 @@ class UserController {
       query.where('last_name', 'LIKE', `%${last_name}%`)
     }
     if (name) {
-      query.where((builder) => {
-        builder.where('first_name', 'LIKE', `${name}%`)
+      query.where(function () {
+        this.where('first_name', 'LIKE', `%${name}%`)
           .orWhere('last_name', 'LIKE', `%${name}%`)
       })
     }
 
     query.whereHas('roles', (builder) => {
       builder.whereIn('id', roles)
-
-    }).whereHas('clients', (builder) => {
-      builder.whereHas('industry_id', +industry)
+    }).whereHas('industries', (builder) => {
+      builder.where('industry_id', +industry)
     })
 
     return await query.fetch()
@@ -146,22 +145,22 @@ class UserFilter extends ModelFilter {
 
   // This will filter 'company_id' OR 'company'
   company (id) {
-    return this.where('company_id', +id);
+    return this.where('company_id', +id)
   }
 
   name (name) {
-    return this.where((builder) => {
-      builder.where('first_name', 'LIKE', `%${name}%`)
-        .orWhere('last_name', 'LIKE', `%${name}%`);
-    });
+    return this.where(function () {
+      this.where('first_name', 'LIKE', `%${name}%`)
+        .orWhere('last_name', 'LIKE', `%${name}%`)
+    })
   }
 
   mobilePhone (phone) {
-    return this.where('mobile_phone', 'LIKE', `${phone}%`);
+    return this.where('mobile_phone', 'LIKE', `${phone}%`)
   }
 
   secretMethod (secretParameter) {
-    return this.where('some_column', true);
+    return this.where('some_column', true)
   }
 }
 ```
@@ -216,7 +215,7 @@ class UserController {
   async index ({ request }) {
     return await User.query()
       .filter(request.all())
-      .fetch();
+      .fetch()
   }
 
   // or with paginate method
@@ -252,7 +251,7 @@ class UserController {
     
     return await User.query()
       .filter(request.all(), Filter)
-      .fetch();
+      .fetch()
   }
   
 }
