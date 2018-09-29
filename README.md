@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
 [![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
 
-> Works with @adonisjs/lucid 5.0.3 or greater.
+> Works with @adonisjs/lucid 6.1.2 or greater.
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)

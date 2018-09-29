@@ -26,21 +26,20 @@
     "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
   "dependencies": {
-    "@adonisjs/generic-exceptions": "^2.0.1",
-    "debug": "^3.1.0"
+    "@adonisjs/generic-exceptions": "^2.0.1"
   },
   "devDependencies": {
-    "@adonisjs/ace": "^5.0.2",
-    "@adonisjs/fold": "^4.0.8",
-    "@adonisjs/lucid": "^5.0.4",
-    "@adonisjs/sink": "^1.0.16",
-    "coveralls": "^3.0.1",
+    "@adonisjs/ace": "^5.0.5",
+    "@adonisjs/fold": "^4.0.9",
+    "@adonisjs/lucid": "^6.1.2",
+    "@adonisjs/sink": "^1.0.17",
+    "coveralls": "^3.0.2",
     "japa": "^1.0.6",
     "japa-cli": "^1.0.1",
-    "lodash": "^4.17.10",
-    "nyc": "^12.0.2",
-    "sqlite3": "^4.0.0",
-    "standard": "^11.0.1"
+    "lodash": "^4.17.11",
+    "nyc": "^13.0.1",
+    "sqlite3": "^4.0.2",
+    "standard": "^12.0.1"
   },
   "standard": {
     "globals": [
