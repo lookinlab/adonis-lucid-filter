@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard",
     "pretest": "npm run lint",
-    "test": "DB=sqlite nyc japa",
+    "test": "DB=sqlite nyc node japaFile.js",
     "posttest": "npm run coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -34,8 +34,7 @@
     "@adonisjs/lucid": "^6.1.2",
     "@adonisjs/sink": "^1.0.17",
     "coveralls": "^3.0.2",
-    "japa": "^1.0.6",
-    "japa-cli": "^1.0.1",
+    "japa": "^2.0.3",
     "lodash": "^4.17.11",
     "nyc": "^13.0.1",
     "sqlite3": "^4.0.2",
