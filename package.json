@@ -26,7 +26,7 @@
     "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
   "dependencies": {
-    "@adonisjs/generic-exceptions": "^2.0.1"
+    "@adonisjs/generic-exceptions": "^3.0.0"
   },
   "devDependencies": {
     "@adonisjs/ace": "^5.0.5",
