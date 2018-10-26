@@ -19,9 +19,8 @@ class LucidFilter {
       Filter = Filter || Model.ModelFilter
 
       if (typeof (Filter) !== 'function') {
-        throw GE
-          .InvalidArgumentException
-          .invalidParameter('Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
+        throw new GE
+          .InvalidArgumentException('Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
       }
       const modelFilter = new Filter(this, input)
       return modelFilter.handle()

@@ -53,7 +53,7 @@ test.group('LucidFilter', (group) => {
     TestModel._bootIfNotBooted()
 
     const fn = () => TestModel.query().filter()
-    assert.throws(fn, 'E_INVALID_PARAMETER: Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
+    assert.throws(fn, 'Make sure to pass ModelFilter as 2nd parameter to Filterable trait or function filter')
   })
 
   test('exists filter method when define ModelFilter to Filterable trait', (assert) => {
