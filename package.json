@@ -34,7 +34,7 @@
     "@adonisjs/lucid": "^6.1.2",
     "@adonisjs/sink": "^1.0.17",
     "coveralls": "^3.0.2",
-    "japa": "^2.0.3",
+    "japa": "^3.0.0",
     "lodash": "^4.17.11",
     "nyc": "^14.0.0",
     "sqlite3": "^4.0.2",
