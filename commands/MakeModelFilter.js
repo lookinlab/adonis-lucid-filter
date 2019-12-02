@@ -35,7 +35,7 @@ class MakeModelFilter extends Command {
 
   async handle ({ name }) {
     name = name.replace(/Filter$/g, '')
-    name += `Filter`
+    name += 'Filter'
 
     /**
      * Reading template as a string form the mustache file
@@ -48,6 +48,7 @@ class MakeModelFilter extends Command {
     const relativePath = path.join('app/ModelFilters', `${name}.js`)
     const filterPath = path.join(this.Helpers.appRoot(), relativePath)
 
+    /* istanbul ignore next */
     if (!this.viaAce) {
       return this.generateFile(filterPath, template, { name })
     }

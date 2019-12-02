@@ -28,11 +28,11 @@ test.group('ModelFilter', (group) => {
     User._bootIfNotBooted()
 
     input = {
-      'username': 'er',
-      'email': '',
-      'company_id': 2,
-      'roles': [1, 4, 7],
-      'industry': 5
+      username: 'er',
+      email: '',
+      company_id: 2,
+      roles: [1, 4, 7],
+      industry: 5
     }
     filter = new TestModelFilter(User.query(), input)
   })
@@ -44,7 +44,7 @@ test.group('ModelFilter', (group) => {
   test('remove empty input', (assert) => {
     const filteredInput = filter._removeEmptyInput(input)
 
-    for (let key in filteredInput) {
+    for (const key in filteredInput) {
       assert.notEqual(filteredInput[key], '')
     }
   })
@@ -56,7 +56,7 @@ test.group('ModelFilter', (group) => {
       first_name: 'firstName'
     }
 
-    for (let key in standard) {
+    for (const key in standard) {
       assert.equal(filter._getFilterMethod(key), standard[key])
     }
   })
@@ -75,7 +75,7 @@ test.group('ModelFilter', (group) => {
   test('input method of filter model', (assert) => {
     const filteredInput = filter._removeEmptyInput(input)
 
-    for (let key in filteredInput) {
+    for (const key in filteredInput) {
       assert.equal(filter.input(key), filteredInput[key])
     }
 

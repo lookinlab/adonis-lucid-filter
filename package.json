@@ -29,16 +29,16 @@
     "@adonisjs/generic-exceptions": "^3.0.1"
   },
   "devDependencies": {
-    "@adonisjs/ace": "^5.0.5",
+    "@adonisjs/ace": "^5.0.8",
     "@adonisjs/fold": "^4.0.9",
-    "@adonisjs/lucid": "^6.1.2",
+    "@adonisjs/lucid": "^6.1.3",
     "@adonisjs/sink": "^1.0.17",
-    "coveralls": "^3.0.2",
-    "japa": "^2.0.3",
-    "lodash": "^4.17.11",
-    "nyc": "^13.0.1",
-    "sqlite3": "^4.0.2",
-    "standard": "^12.0.1"
+    "coveralls": "^3.0.9",
+    "japa": "^3.0.1",
+    "lodash": "^4.17.15",
+    "nyc": "^14.1.1",
+    "sqlite3": "^4.1.0",
+    "standard": "^14.3.1"
   },
   "standard": {
     "globals": [

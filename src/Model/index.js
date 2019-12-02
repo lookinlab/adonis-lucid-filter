@@ -167,7 +167,7 @@ class ModelFilter {
   _filterInput () {
     const input = this.$input
 
-    for (let key in input) {
+    for (const key in input) {
       const method = this._getFilterMethod(key)
       const value = input[key]
 
@@ -204,7 +204,7 @@ class ModelFilter {
   _removeEmptyInput (input) {
     const filterableInput = {}
 
-    for (let key in input) {
+    for (const key in input) {
       const value = input[key]
 
       if (value !== '' && value !== null) {

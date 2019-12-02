@@ -17,6 +17,7 @@ class User extends Model {
     super.boot()
     this.addTrait('@provider:Filterable')
   }
+
   static get hidden () {
     return [
       'created_at',
@@ -24,6 +25,7 @@ class User extends Model {
       'password'
     ]
   }
+
   industries () {
     return this.belongsToMany(Industry)
   }
