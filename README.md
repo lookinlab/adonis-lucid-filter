@@ -1,10 +1,12 @@
 # Adonis Lucid Filter
 
+**Note:** New realese for **Adonis v5 work in progress**
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
 [![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
 
-> Works with @adonisjs/lucid 6.1.3 or greater.
+> Works with @adonisjs/lucid ^6.1.*.
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
