@@ -1,15 +1,25 @@
 {
   "name": "adonis-lucid-filter",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Addon for filtering AdonisJS Lucid ORM",
-  "main": "index.js",
+  "main": "build/providers/LucidFilterProvider.js",
+  "files": [
+    "build/adonis-typings",
+    "build/providers",
+    "build/src"
+  ],
   "scripts": {
-    "lint": "standard",
+    "lint": "eslint . --ext=.ts",
     "pretest": "npm run lint",
-    "test": "DB=sqlite nyc node japaFile.js",
+    "test": "node japaFile.js",
+    "clean": "del build",
     "posttest": "npm run coverage",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "compile": "npm run lint && npm run clean && tsc",
+    "copy:files": "copyfiles \"templates/*.txt\" build",
+    "build": "npm run compile",
+    "prepublishOnly": "npm run build"
   },
+  "types": "./build/adonis-typings/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/lookinlab/adonis-lucid-filter.git"
@@ -25,25 +35,15 @@
   "bugs": {
     "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
-  "dependencies": {
-    "@adonisjs/generic-exceptions": "^3.0.1"
-  },
   "devDependencies": {
-    "@adonisjs/ace": "^5.0.8",
-    "@adonisjs/fold": "^4.0.9",
-    "@adonisjs/lucid": "^6.1.3",
-    "@adonisjs/sink": "^1.0.17",
-    "coveralls": "^3.0.9",
+    "@adonisjs/fold": "^6.3.3",
+    "@adonisjs/lucid": "^7.6.3",
+    "@adonisjs/mrm-preset": "^2.2.4",
+    "eslint": "^6.8.0",
+    "eslint-plugin-adonis": "^1.0.8",
     "japa": "^3.0.1",
-    "lodash": "^4.17.15",
-    "nyc": "^15.0.0",
-    "sqlite3": "^4.1.0",
-    "standard": "^14.3.1"
-  },
-  "standard": {
-    "globals": [
-      "use"
-    ]
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   },
   "directories": {
     "test": "test"

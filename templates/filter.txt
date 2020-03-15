@@ -1,0 +1,5 @@
+import { LucidFilter } from '@ioc:Adonis/Addon/LucidFilter'
+
+export default class {{ name }} extends LucidFilter {
+
+}

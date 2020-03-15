@@ -1,5 +1,3 @@
-'use strict'
-
 /*
  * adonis-lucid-filter
  *
@@ -9,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
 const _ = require('lodash')
 
 /**
@@ -36,28 +35,22 @@ const aggregates = [
   'has',
   'orHas',
   'doesntHave',
-  'orDoesntHave'
+  'orDoesntHave',
 ]
 
 /**
- * ModelFilter class to filtering Adonis Lucid ORM
+ * LucidFilter class to filtering Adonis Lucid ORM
  *
- * @class ModelFilter
+ * @class LucidFilter
  * @constructor
  */
-class ModelFilter {
-  /**
-   * ModelFilter constructor
-   *
-   * @param {QueryBuilder} query
-   * @param {Object} input
-   *
-   * @return {void}
-   */
-  constructor (query, input = {}) {
-    this.$query = query
+export default class LucidFilter implements LucidFilterContract {
+  public $input
+  public $blacklist: string[] = []
+  public setup? (query: any): void
+
+  constructor (private query, input = {}) {
     this.$input = this._removeEmptyInput(input)
-    this.$blacklist = this.constructor.blacklist
   }
 
   /**
@@ -68,20 +61,8 @@ class ModelFilter {
    *
    * @return {Boolean}
    */
-  static get dropId () {
+  public get dropId (): boolean {
     return true
-  }
-
-  /**
-   * Array of method names that should not be called
-   *
-   * @method blacklist
-   * @static
-   *
-   * @return String[]
-   */
-  static get blacklist () {
-    return []
   }
 
   /**
@@ -91,14 +72,14 @@ class ModelFilter {
    *
    * @return {QueryBuilder}
    */
-  handle () {
+  public handle () {
     /* istanbul ignore next */
     if (this.setup && typeof (this.setup) === 'function') {
-      this.setup(this.$query)
+      this.setup(this.query)
     }
     this._filterInput()
 
-    return this.$query
+    return this.query
   }
 
   /**
@@ -110,9 +91,11 @@ class ModelFilter {
    *
    * @return {Boolean}
    */
-  whitelistMethod (method) {
+  public whitelistMethod (method) {
     const index = this.$blacklist.indexOf(method)
-    if (~index) this.$blacklist.splice(index, 1)
+    if (~index) {
+      this.$blacklist.splice(index, 1)
+    }
 
     return (!!~index)
   }
@@ -127,8 +110,8 @@ class ModelFilter {
    *
    * @return {Object|String|Null}
    */
-  input (key = null, defaultValue = null) {
-    if (key === null) {
+  public input (key = '', defaultValue = null) {
+    if (key) {
       return this.$input
     }
     return this.$input[key] || defaultValue
@@ -146,12 +129,12 @@ class ModelFilter {
    *
    * @return {QueryBuilder}
    */
-  related (relation, column, operator, value = null) {
+  public related (relation, column, operator, value = null) {
     if (value === null) {
       value = operator
       operator = '='
     }
-    return this.$query.whereHas(relation, (builder) => {
+    return this.query.whereHas(relation, (builder) => {
       builder.where(column, operator, value)
     })
   }
@@ -164,7 +147,7 @@ class ModelFilter {
    *
    * @return {void}
    */
-  _filterInput () {
+  private _filterInput () {
     const input = this.$input
 
     for (const key in input) {
@@ -187,8 +170,8 @@ class ModelFilter {
    *
    * @return {String}
    */
-  _getFilterMethod (key) {
-    return _.camelCase(this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key)
+  private _getFilterMethod (key) {
+    return _.camelCase(this.dropId ? key.replace(/^(.*)_id$/, '$1') : key)
   }
 
   /**
@@ -201,7 +184,7 @@ class ModelFilter {
    *
    * @return {Object}
    */
-  _removeEmptyInput (input) {
+  private _removeEmptyInput (input) {
     const filterableInput = {}
 
     for (const key in input) {
@@ -225,7 +208,7 @@ class ModelFilter {
    *
    * @return {Boolean}
    */
-  _methodIsCallable (method) {
+  private _methodIsCallable (method) {
     return !!this[method] &&
       !this._methodIsBlacklisted(method) &&
       typeof (this[method]) === 'function'
@@ -241,15 +224,13 @@ class ModelFilter {
    *
    * @return {Boolean}
    */
-  _methodIsBlacklisted (method) {
+  private _methodIsBlacklisted (method) {
     return !!(~this.$blacklist.indexOf(method))
   }
 }
 
 aggregates.forEach((method) => {
-  ModelFilter.prototype[method] = function (...args) {
-    return this.$query[method](...args)
+  LucidFilter.prototype[method] = function (...args) {
+    return this.query[method](...args)
   }
 })
-
-module.exports = ModelFilter
