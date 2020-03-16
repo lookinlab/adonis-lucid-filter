@@ -20,13 +20,4 @@ export default class LucidFilterProvider {
   public register (): void {
     this.container.singleton('Adonis/Addons/LucidFilter', () => ({ LucidFilter }))
   }
-
-  public boot (): void {
-    this.container.with(['Adonis/Lucid/Database'], (Database) => {
-      Database.ModelQueryBuilder.macro('filter', function (input: any = {}, Filter?: any) {
-        Filter = Filter || this.model.filter
-        return new Filter(this, input).handle()
-      })
-    })
-  }
 }
