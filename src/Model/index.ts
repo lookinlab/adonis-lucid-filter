@@ -7,8 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
 import camelCase from 'lodash/camelCase'
+import { InputContract, LucidFilterConstructorContract, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
+import { ModelConstructorContract, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
 
 /**
  * Methods of query builder to be added
@@ -38,61 +39,65 @@ const aggregates = [
   'orDoesntHave',
 ]
 
+function StaticImplements<T> () {
+  return (_t: T) => {}
+}
+
 /**
  * LucidFilter class to filtering Adonis Lucid ORM
  *
  * @class LucidFilter
  * @constructor
  */
-export default class LucidFilter {
+@StaticImplements<LucidFilterConstructorContract>()
+export default class LucidFilter implements LucidFilterContract {
+  public ['constructor']: typeof LucidFilter
+
   public static blacklist: string[] = []
   public static dropId: boolean = true
-  public static setup? (query: any): void
   public static camelCase: boolean = true
 
-  private static $input: object
-  private static $query: any
+  public setup? (query: ModelQueryBuilderContract<ModelConstructorContract>): void
+  private $input: InputContract
+  private $query: ModelQueryBuilderContract<ModelConstructorContract>
+  private $blacklist: string[]
 
-  public static handle (query: ModelQueryBuilder, input): ModelQueryBuilder {
-    this.$input = this._removeEmptyInput(input)
+  constructor (
+    query: ModelQueryBuilderContract<ModelConstructorContract>,
+    input: InputContract
+  ) {
     this.$query = query
+    this.$input = LucidFilter._removeEmptyInput(input)
+    this.$blacklist = this.constructor.blacklist
+  }
 
+  public handle (): ModelQueryBuilderContract<ModelConstructorContract> {
     /* istanbul ignore next */
-    if (this.setup && typeof (this.setup) === 'function') {
-      this.setup(query)
+    if (this.setup && typeof this.setup === 'function') {
+      this.setup(this.$query)
     }
     this._filterByInput()
 
-    return query
+    return this.$query
   }
 
-  public static whitelistMethod (method): boolean {
-    const index = this.blacklist.indexOf(method)
+  public whitelistMethod (method): boolean {
+    const index = this.$blacklist.indexOf(method)
     if (~index) {
-      this.blacklist.splice(index, 1)
+      this.$blacklist.splice(index, 1)
     }
 
     return !!~index
   }
 
-  public static input (key: string, defaultValue: any = null) {
+  public input (key: string, defaultValue: any = null) {
     if (!key) {
       return this.$input
     }
     return this.$input[key] || defaultValue
   }
 
-  public static related (relation, column, operator, value: any = null) {
-    if (value === null) {
-      value = operator
-      operator = '='
-    }
-    this.$query.whereHas(relation, (builder) => {
-      builder.where(column, operator, value)
-    })
-  }
-
-  private static _filterByInput (): void {
+  private _filterByInput (): void {
     for (const key in this.$input) {
       const method = this._getFilterMethod(key)
       const value = this.$input[key]
@@ -103,12 +108,12 @@ export default class LucidFilter {
     }
   }
 
-  private static _getFilterMethod (key): string {
-    const methodName = this.dropId ? key.replace(/^(.*)_id$/, '$1') : key
-    return this.camelCase ? camelCase(methodName) : methodName
+  private _getFilterMethod (key: string): string {
+    const methodName = this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key
+    return this.constructor.camelCase ? camelCase(methodName) : methodName
   }
 
-  private static _removeEmptyInput (input): object {
+  private static _removeEmptyInput (input: InputContract): object {
     const filterableInput = {}
 
     for (let key in input) {
@@ -121,19 +126,19 @@ export default class LucidFilter {
     return filterableInput
   }
 
-  private static _methodIsCallable (method): boolean {
+  private _methodIsCallable (method: string): boolean {
     return !!this[method] &&
-      !this._methodIsBlacklisted(method) &&
-      typeof (this[method]) === 'function'
+      typeof this[method] === 'function' &&
+      !this._methodIsBlacklisted(method)
   }
 
-  private static _methodIsBlacklisted (method): boolean {
-    return !!~this.blacklist.indexOf(method)
+  private _methodIsBlacklisted (method: string): boolean {
+    return this.$blacklist.includes(method)
   }
 }
 
 aggregates.forEach((method) => {
-  LucidFilter[method] = function (...args) {
+  LucidFilter.prototype[method] = function (...args) {
     return this.$query[method](...args)
   }
 })
