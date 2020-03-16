@@ -6,5 +6,9 @@
     "types": [
       "@adonisjs/lucid"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }
