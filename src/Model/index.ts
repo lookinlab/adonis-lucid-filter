@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-const _ = require('lodash')
+import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
+import camelCase from 'lodash/camelCase'
 
 /**
  * Methods of query builder to be added
- * to model filter
+ * to lucid filter
  */
 const aggregates = [
   'where',
@@ -44,115 +44,58 @@ const aggregates = [
  * @class LucidFilter
  * @constructor
  */
-export default class LucidFilter implements LucidFilterContract {
-  public $input
-  public $blacklist: string[] = []
-  public setup? (query: any): void
+export default class LucidFilter {
+  public static blacklist: string[] = []
+  public static dropId: boolean = true
+  public static setup? (query: any): void
+  public static camelCase: boolean = true
 
-  constructor (private query, input = {}) {
+  private static $input: object
+  private static $query: any
+
+  public static handle (query: ModelQueryBuilder, input): ModelQueryBuilder {
     this.$input = this._removeEmptyInput(input)
-  }
+    this.$query = query
 
-  /**
-   * Drop `_id` from the end of input keys when referencing methods
-   *
-   * @method dropId
-   * @static
-   *
-   * @return {Boolean}
-   */
-  public get dropId (): boolean {
-    return true
-  }
-
-  /**
-   * Handle all filters
-   *
-   * @method handle
-   *
-   * @return {QueryBuilder}
-   */
-  public handle () {
     /* istanbul ignore next */
     if (this.setup && typeof (this.setup) === 'function') {
-      this.setup(this.query)
+      this.setup(query)
     }
-    this._filterInput()
+    this._filterByInput()
 
-    return this.query
+    return query
   }
 
-  /**
-   * Remove a method from the blacklist
-   *
-   * @method whitelistMethod
-   *
-   * @param {String} method
-   *
-   * @return {Boolean}
-   */
-  public whitelistMethod (method) {
-    const index = this.$blacklist.indexOf(method)
+  public static whitelistMethod (method): boolean {
+    const index = this.blacklist.indexOf(method)
     if (~index) {
-      this.$blacklist.splice(index, 1)
+      this.blacklist.splice(index, 1)
     }
 
-    return (!!~index)
+    return !!~index
   }
 
-  /**
-   * Retrieve input by key or all input as object
-   *
-   * @method input
-   *
-   * @param {String} key
-   * @param {String} defaultValue
-   *
-   * @return {Object|String|Null}
-   */
-  public input (key = '', defaultValue = null) {
-    if (key) {
+  public static input (key: string, defaultValue: any = null) {
+    if (!key) {
       return this.$input
     }
     return this.$input[key] || defaultValue
   }
 
-  /**
-   * Add a where constraint to a relationship
-   *
-   * @method related
-   *
-   * @param {String} relation
-   * @param {String} column
-   * @param {String|Number} operator
-   * @param {String|Number} value
-   *
-   * @return {QueryBuilder}
-   */
-  public related (relation, column, operator, value = null) {
+  public static related (relation, column, operator, value: any = null) {
     if (value === null) {
       value = operator
       operator = '='
     }
-    return this.query.whereHas(relation, (builder) => {
+    this.$query.whereHas(relation, (builder) => {
       builder.where(column, operator, value)
     })
   }
 
-  /**
-   * Filter with input object
-   *
-   * @method _filterInput
-   * @private
-   *
-   * @return {void}
-   */
-  private _filterInput () {
-    const input = this.$input
-
-    for (const key in input) {
+  private static _filterByInput (): void {
+    for (const key in this.$input) {
       const method = this._getFilterMethod(key)
-      const value = input[key]
+      const value = this.$input[key]
 
       if (this._methodIsCallable(method)) {
         this[method](value)
@@ -160,34 +103,15 @@ export default class LucidFilter implements LucidFilterContract {
     }
   }
 
-  /**
-   * Get filter method name
-   *
-   * @method _getFilterMethod
-   * @private
-   *
-   * @param {String} key
-   *
-   * @return {String}
-   */
-  private _getFilterMethod (key) {
-    return _.camelCase(this.dropId ? key.replace(/^(.*)_id$/, '$1') : key)
+  private static _getFilterMethod (key): string {
+    const methodName = this.dropId ? key.replace(/^(.*)_id$/, '$1') : key
+    return this.camelCase ? camelCase(methodName) : methodName
   }
 
-  /**
-   * Remove empty strings from the input data
-   *
-   * @method _removeEmptyInput
-   * @private
-   *
-   * @param {Object} input
-   *
-   * @return {Object}
-   */
-  private _removeEmptyInput (input) {
+  private static _removeEmptyInput (input): object {
     const filterableInput = {}
 
-    for (const key in input) {
+    for (let key in input) {
       const value = input[key]
 
       if (value !== '' && value !== null) {
@@ -197,40 +121,19 @@ export default class LucidFilter implements LucidFilterContract {
     return filterableInput
   }
 
-  /**
-   * Check if the method is not blacklisted
-   * and callable on the extended class
-   *
-   * @method _methodIsCallable
-   * @private
-   *
-   * @param {String} method
-   *
-   * @return {Boolean}
-   */
-  private _methodIsCallable (method) {
+  private static _methodIsCallable (method): boolean {
     return !!this[method] &&
       !this._methodIsBlacklisted(method) &&
       typeof (this[method]) === 'function'
   }
 
-  /**
-   * Check if the method exists in blacklist
-   *
-   * @method _methodIsBlacklisted
-   * @private
-   *
-   * @param {String} method
-   *
-   * @return {Boolean}
-   */
-  private _methodIsBlacklisted (method) {
-    return !!(~this.$blacklist.indexOf(method))
+  private static _methodIsBlacklisted (method): boolean {
+    return !!~this.blacklist.indexOf(method)
   }
 }
 
 aggregates.forEach((method) => {
-  LucidFilter.prototype[method] = function (...args) {
-    return this.query[method](...args)
+  LucidFilter[method] = function (...args) {
+    return this.$query[method](...args)
   }
 })
