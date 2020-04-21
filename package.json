@@ -7,6 +7,7 @@
     "build/adonis-typings",
     "build/providers",
     "build/commands",
+    "build/templates",
     "build/src"
   ],
   "scripts": {
@@ -15,7 +16,7 @@
     "test": "node japaFile.js",
     "clean": "rm -rf build",
     "posttest": "npm run coverage",
-    "compile": "npm run lint && npm run clean && tsc",
+    "compile": "npm run lint && npm run clean && tsc && npm run copy:files",
     "copy:files": "copyfiles \"templates/*.txt\" build",
     "build": "npm run compile",
     "prepublishOnly": "npm run build"
