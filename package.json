@@ -6,13 +6,14 @@
   "files": [
     "build/adonis-typings",
     "build/providers",
+    "build/commands",
     "build/src"
   ],
   "scripts": {
     "lint": "eslint . --ext=.ts",
     "pretest": "npm run lint",
     "test": "node japaFile.js",
-    "clean": "del build",
+    "clean": "rm -rf build",
     "posttest": "npm run coverage",
     "compile": "npm run lint && npm run clean && tsc",
     "copy:files": "copyfiles \"templates/*.txt\" build",
@@ -36,9 +37,11 @@
     "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
   "devDependencies": {
+    "@adonisjs/ace": "^6.9.2",
     "@adonisjs/fold": "^6.3.3",
     "@adonisjs/lucid": "^8.0.2",
     "@adonisjs/mrm-preset": "^2.2.4",
+    "@types/node": "^13.13.1",
     "eslint": "^6.8.0",
     "eslint-plugin-adonis": "^1.0.8",
     "japa": "^3.0.1",
@@ -52,6 +55,9 @@
     "types": "adonis-lucid-filter",
     "providers": [
       "adonis-lucid-filter"
+    ],
+    "commands": [
+      "adonis-lucid-filter/build/commands"
     ]
   }
 }
