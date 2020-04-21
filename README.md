@@ -1,6 +1,6 @@
 # Adonis Lucid Filter
 
-**Note:** New realese for **Adonis v5 work in progress**
+**Note:** New release [for **Adonis v5**](https://github.com/lookinlab/adonis-lucid-filter/tree/v2) is published
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
