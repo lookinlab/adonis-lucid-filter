@@ -19,7 +19,7 @@
     "build": "npm run compile",
     "prepublishOnly": "npm run build"
   },
-  "types": "./build/adonis-typings/index.d.ts",
+  "typings": "./build/adonis-typings/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/lookinlab/adonis-lucid-filter.git"
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@adonisjs/fold": "^6.3.3",
-    "@adonisjs/lucid": "^7.6.3",
+    "@adonisjs/lucid": "^8.0.2",
     "@adonisjs/mrm-preset": "^2.2.4",
     "eslint": "^6.8.0",
     "eslint-plugin-adonis": "^1.0.8",
@@ -47,5 +47,11 @@
   },
   "directories": {
     "test": "test"
+  },
+  "adonisjs": {
+    "types": "adonis-lucid-filter",
+    "providers": [
+      "adonis-lucid-filter"
+    ]
   }
 }
