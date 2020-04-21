@@ -93,7 +93,7 @@ node ace invoke
 
 Make sure to register the provider inside `.adonisrc.json` file.
 
-```json
+```js
 "providers": [
   // ...other packages
   "adonis-lucid-filter"
@@ -101,12 +101,12 @@ Make sure to register the provider inside `.adonisrc.json` file.
 ```
 
 For TypeScript projects add to `tsconfig.json` file:
-```json
+```js
 "compilerOptions": {
-  "types": {
+  "types": [
     // ...other packages
     "adonis-lucid-filter"
-  }
+  ]
 }
 ```
 
