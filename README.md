@@ -75,11 +75,11 @@ Make sure to install it using `npm` or `yarn`.
 ```bash
 # npm
 npm i adonis-lucid-filter@alpha
-node ace invoke
+node ace invoke adonis-lucid-filter
 
 # yarn
 yarn add adonis-lucid-filter@alpha
-node ace invoke
+node ace invoke adonis-lucid-filter
 ```
 
 ## Usage
