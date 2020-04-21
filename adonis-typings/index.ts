@@ -1,14 +1,42 @@
-declare module '@ioc:Adonis/Addons/LucidFilter' {
-  import { ModelQueryBuilderContract, ModelConstructorContract } from '@ioc:Adonis/Lucid/Model'
+/*
+ * adonis-lucid-filter
+ *
+ * (c) Lookin Anton <lookin@lookinlab.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-  export interface InputContract {
-    [propName: string]: any
+declare module '@ioc:Adonis/Addons/LucidFilter' {
+  import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
+
+  /**
+   * Lucid filter instance
+   */
+  export interface LucidFilter {
+    handle(): ModelQueryBuilderContract<LucidModel, LucidRow>,
+    filterByInput(): void,
+    setup?($query: any): void,
+    input(key: string, defaultValue: any): any,
+    getFilterMethod(key: string): string,
+    whitelistMethod(method: string): boolean,
+    methodIsCallable(method: string): boolean,
+    methodIsBlacklisted(method: string): boolean
   }
+
+  /**
+   * Lucid filter static contract
+   */
   export interface LucidFilterContract {
-    handle(): ModelQueryBuilderContract<ModelConstructorContract>
+    blacklist: string[],
+    dropId: boolean,
+    camelCase: boolean,
+    removeEmptyInput(input: object): object,
+    new (
+      $query: ModelQueryBuilderContract<LucidModel, LucidRow>,
+      $input: object
+    ): LucidFilter
   }
-  export interface LucidFilterConstructorContract<Filter extends LucidFilterContract = LucidFilterContract> {
-    new (query: ModelQueryBuilderContract<ModelConstructorContract>, input: InputContract): Filter
-  }
-  export const LucidFilter: LucidFilterConstructorContract
+
+  export const BaseModelFilter: LucidFilterContract
 }
