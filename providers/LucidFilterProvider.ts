@@ -8,7 +8,7 @@
  */
 
 import { IocContract } from '@adonisjs/fold'
-import LucidFilter from '../src/Model'
+import BaseModelFilter from '../src/BaseModel'
 
 /**
  * Provider to register lucid filter with the IoC container
@@ -18,6 +18,6 @@ export default class LucidFilterProvider {
   }
 
   public register (): void {
-    this.container.singleton('Adonis/Addons/LucidFilter', () => ({ LucidFilter }))
+    this.container.singleton('Adonis/Addons/LucidFilter', () => ({ BaseModelFilter }))
   }
 }
