@@ -12,16 +12,15 @@ This addon adds the functionality to filter Lucid Models
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
 
-`/users?name=er&last_name=&company_id=2&roles[]=1&roles[]=4&roles[]=7&industry=5`
+`/users?name=Tony&last_name=&company_id=2&industry=5`
 
 `request.all()` or `request.get()` will return:
 
 ```json
 {
-  "name": "er",
+  "name": "Tony",
   "last_name": "",
   "company_id": 2,
-  "roles": [1, 4, 7],
   "industry": 5
 }
 ```
@@ -35,7 +34,7 @@ import User from 'App/Models/User'
 export default class UserController {
 
   public index ({ request }: HttpContextContract) {
-    const { company_id, last_name, name, roles, industry } = request.get()
+    const { company_id, last_name, name, industry } = request.get()
   
     const query = User.query().where('company_id', +company_id)
 
@@ -48,12 +47,6 @@ export default class UserController {
           .orWhere('last_name', 'LIKE', `%${name}%`)
       })
     }
-
-    query.whereHas('roles', (builder) => {
-      builder.whereIn('id', roles)
-    }).whereHas('industries', (builder) => {
-      builder.where('industry_id', +industry)
-    })
 
     return query.exec()
   }
