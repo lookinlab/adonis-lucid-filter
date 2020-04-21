@@ -8,5 +8,5 @@
  */
 
 export default [
-  'adonis-lucid-filter/build/commands/MakeModelFilter'
+  'adonis-lucid-filter/build/commands/MakeModelFilter',
 ]
