@@ -1,4 +1,4 @@
-import { BaseModelFilter } from '@ioc:Adonis/Addon/LucidFilter'
+import { BaseModelFilter } from '@ioc:Adonis/Addons/LucidFilter'
 
 export default class {{ filename }} extends BaseModelFilter {
   constructor(public $query, public $input) {
