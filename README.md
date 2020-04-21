@@ -169,7 +169,7 @@ export default class UserFilter extends BaseModelFilter {
   }
 
   secretMethod (secretParameter: any) {
-    return this.where('some_column', true)
+    return this.$query.where('some_column', true)
   }
 }
 ```
@@ -190,7 +190,7 @@ Example:
 ```js
 setup ($query) {
   this.whitelistMethod('secretMethod')
-  return this.where('is_admin', true)
+  return this.$query.where('is_admin', true)
 }
 ```
 > `setup()` not may be async
