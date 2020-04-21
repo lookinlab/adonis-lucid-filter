@@ -55,7 +55,7 @@ export default class UserController {
       builder.where('industry_id', +industry)
     })
 
-    return query.fetch()
+    return query.exec()
   }
 
 }
