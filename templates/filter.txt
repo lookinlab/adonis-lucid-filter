@@ -1,5 +1,9 @@
-import { LucidFilter } from '@ioc:Adonis/Addon/LucidFilter'
+import { BaseModelFilter } from '@ioc:Adonis/Addon/LucidFilter'
 
-export default class {{ name }} extends LucidFilter {
+export default class {{ name }} extends BaseModelFilter {
+  constructor(public $query, public $input) {
+    super($query, $input)
+  }
 
+  // Filter methods
 }
