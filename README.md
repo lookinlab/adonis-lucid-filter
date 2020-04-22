@@ -132,7 +132,7 @@ To define methods for the following input:
 ```json
 {
   "company_id": 5,
-  "name": "Tuck",
+  "name": "Tony",
   "mobile_phone": "888555"
 }
 ```
