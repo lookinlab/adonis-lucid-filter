@@ -14,28 +14,28 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
    * Lucid filter instance
    */
   export interface LucidFilter {
-    handle(): ModelQueryBuilderContract<LucidModel, LucidRow>,
-    filterByInput(): void,
-    setup?($query: any): void,
-    input(key: string, defaultValue: any): any,
-    getFilterMethod(key: string): string,
-    whitelistMethod(method: string): boolean,
-    methodIsCallable(method: string): boolean,
-    methodIsBlacklisted(method: string): boolean
+    filterByInput(): void;
+    setup?($query: any): void;
+    input(key: string, defaultValue: any): any;
+    getFilterMethod(key: string): string;
+    whitelistMethod(method: string): boolean;
+    methodIsCallable(method: string): boolean;
+    methodIsBlacklisted(method: string): boolean;
+    handle(): ModelQueryBuilderContract<LucidModel, LucidRow>;
   }
 
   /**
    * Lucid filter static contract
    */
   export interface LucidFilterContract {
-    blacklist: string[],
-    dropId: boolean,
-    camelCase: boolean,
-    removeEmptyInput(input: object): object,
+    blacklist: string[];
+    dropId: boolean;
+    camelCase: boolean;
+    removeEmptyInput(input: object): object;
     new (
       $query: ModelQueryBuilderContract<LucidModel, LucidRow>,
       $input: object
-    ): LucidFilter
+    ): LucidFilter;
   }
 
   export const BaseModelFilter: LucidFilterContract
