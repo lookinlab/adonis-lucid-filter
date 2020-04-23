@@ -194,15 +194,11 @@ setup ($query) {
 
 ```js
 import UserFilter from 'App/Models/Filters/UserFilter'
-import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
+import { filterable } from '@ioc:Adonis/Addons/LucidFilter'
 
+@filterable(UserFilter)
 export default class User extends BaseModel {
   // ...columns and props
-  
-  public static filter(input: object, Filter: LucidFilterContract = UserFilter) {
-    const filter = new Filter(this.query(), input)
-    return filter.handle()
-  }
 }
 ```
 
