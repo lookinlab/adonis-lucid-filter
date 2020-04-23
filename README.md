@@ -124,7 +124,7 @@ Define the filter logic based on the camel cased input key passed to the `filter
 - `_id` is dropped from the end of the input to define the method so filtering `user_id` would use the `user()` method
 - Input without a corresponding filter method are ignored
 - The value of the key is injected into the method
-- All values are accessible through the `this.input()` method or a single value by key `this.input(key)`
+- All values are accessible through the `this.$input` a property
 - All QueryBuilder methods are accessible in `this.$query` object in the model filter class.
 
 To define methods for the following input:

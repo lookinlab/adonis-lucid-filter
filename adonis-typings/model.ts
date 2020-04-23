@@ -14,14 +14,18 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
    * Lucid filter instance
    */
   export interface LucidFilter {
-    filterByInput(): void;
+    $input: object;
+    $query: ModelQueryBuilderContract<LucidModel, LucidRow>;
+    $blacklist: string[];
+
     setup?($query: any): void;
-    input(key: string, defaultValue: any): any;
-    getFilterMethod(key: string): string;
     whitelistMethod(method: string): boolean;
-    methodIsCallable(method: string): boolean;
-    methodIsBlacklisted(method: string): boolean;
     handle(): ModelQueryBuilderContract<LucidModel, LucidRow>;
+
+    $filterByInput(): void;
+    $getFilterMethod(key: string): string;
+    $methodIsCallable(method: string): boolean;
+    $methodIsBlacklisted(method: string): boolean;
   }
 
   /**
@@ -39,7 +43,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   }
 
   interface FilterableDecoratorContract {
-    (filter: LucidFilterContract): (constructor: LucidModel) => void
+    (filter: LucidFilterContract): (constructor: LucidModel) => void;
   }
 
   export const filterable: FilterableDecoratorContract

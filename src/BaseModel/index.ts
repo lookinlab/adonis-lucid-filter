@@ -46,7 +46,7 @@ export default class BaseModelFilter implements LucidFilter {
     if (this.setup && typeof this.setup === 'function') {
       this.setup(this.$query)
     }
-    this.filterByInput()
+    this.$filterByInput()
 
     return this.$query
   }
@@ -60,25 +60,18 @@ export default class BaseModelFilter implements LucidFilter {
     return !!~index
   }
 
-  public input (key: string, defaultValue: any = null): any {
-    if (!key) {
-      return this.$input
-    }
-    return this.$input[key] || defaultValue
-  }
-
-  public filterByInput (): void {
+  public $filterByInput (): void {
     for (const key in this.$input) {
-      const method = this.getFilterMethod(key)
+      const method = this.$getFilterMethod(key)
       const value = this.$input[key]
 
-      if (this.methodIsCallable(method)) {
+      if (this.$methodIsCallable(method)) {
         this[method](value)
       }
     }
   }
 
-  public getFilterMethod (key: string): string {
+  public $getFilterMethod (key: string): string {
     const methodName = this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key
     return this.constructor.camelCase ? camelCase(methodName) : methodName
   }
@@ -96,13 +89,13 @@ export default class BaseModelFilter implements LucidFilter {
     return filteredInput
   }
 
-  public methodIsCallable (method: string): boolean {
+  public $methodIsCallable (method: string): boolean {
     return !!this[method] &&
       typeof this[method] === 'function' &&
-      !this.methodIsBlacklisted(method)
+      !this.$methodIsBlacklisted(method)
   }
 
-  public methodIsBlacklisted (method: string): boolean {
+  public $methodIsBlacklisted (method: string): boolean {
     return this.$blacklist.includes(method)
   }
 }
