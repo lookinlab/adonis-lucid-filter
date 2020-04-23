@@ -146,6 +146,8 @@ export default class UserFilter extends BaseModelFilter {
   constructor(public $query, public $input) {
     super($query, $input)
   }
+  
+  public static blacklist: string[] = ['secretMethod']
 
   // This will filter 'company_id' OR 'company'
   company (id: number) {
@@ -169,17 +171,11 @@ export default class UserFilter extends BaseModelFilter {
 }
 ```
 
-> **Note:** In the above example if you do not want `_id` dropped from the end of the input you can set `public static dropId: boolean = false` on your filter class. Doing this would allow you to have a `company()` filter method as well as a `companyId()` filter method.
-
-> **Note:** In the example above all methods inside `setup()` will be called every time `filter()` is called on the model
-
 #### Blacklist
 
 Any methods defined in the `blacklist` array will not be called by the filter. Those methods are normally used for internal filter logic.
 
 The `whitelistMethod()` methods can be used to dynamically blacklist methods.
-
-In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input array. In order to call this method it would need to be whitelisted dynamically:
 
 Example:
 ```js
@@ -189,6 +185,27 @@ setup ($query) {
 }
 ```
 > `setup()` not may be async
+
+> **Note:** All methods inside `setup()` will be called every time `filter()` is called on the model
+
+In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input array. In order to call this method it would need to be whitelisted dynamically:
+
+#### Static properties
+
+```js
+export default class UserFilter extends BaseModelFilter {
+  // Blacklisted methods
+  public static blacklist: string[] = []
+  
+  // Dropped `_id` from the end of the input
+  // Doing this would allow you to have a `company()` filter method as well as a `companyId()` filter method.
+  public static dropId: boolean = true
+  
+  // Doing this would allow you to have a mobile_phone() filter method instead of mobilePhone().
+  // By default, mobilePhone() filter method can be called thanks to one of the following input key: mobile_phone, mobilePhone, mobile_phone_id
+  public static camelCase: boolean = true
+}
+```
 
 ### Applying The Filter To A Model
 
