@@ -188,7 +188,7 @@ setup ($query) {
 
 > **Note:** All methods inside `setup()` will be called every time `filter()` is called on the model
 
-In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input array. In order to call this method it would need to be whitelisted dynamically:
+In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input object. In order to call this method it would need to be whitelisted dynamically:
 
 #### Static properties
 
