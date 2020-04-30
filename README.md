@@ -155,18 +155,18 @@ export default class UserFilter extends BaseModelFilter {
   }
 
   name (name: string) {
-    return this.$query.where(function () {
+    this.$query.where(function () {
       this.where('first_name', 'LIKE', `%${name}%`)
         .orWhere('last_name', 'LIKE', `%${name}%`)
     })
   }
 
   mobilePhone (phone: string) {
-    return this.$query.where('mobile_phone', 'LIKE', `${phone}%`)
+    this.$query.where('mobile_phone', 'LIKE', `${phone}%`)
   }
 
   secretMethod (secretParameter: any) {
-    return this.$query.where('some_column', true)
+    this.$query.where('some_column', true)
   }
 }
 ```
@@ -181,7 +181,7 @@ Example:
 ```js
 setup ($query) {
   this.whitelistMethod('secretMethod')
-  return this.$query.where('is_admin', true)
+  this.$query.where('is_admin', true)
 }
 ```
 > `setup()` not may be async
