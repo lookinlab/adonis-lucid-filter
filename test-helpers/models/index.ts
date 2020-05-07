@@ -1,5 +1,3 @@
-'use strict'
-
 /*
  * adonis-lucid-filter
  *
@@ -9,13 +7,8 @@
  * file that was distributed with this source code.
  */
 
-const Model = use('Model')
-const User = require('./User')
+import BaseModel from './BaseModel'
+import User from './User'
+import Industry from './Industry'
 
-class Industry extends Model {
-  users () {
-    return this.belongsToMany(User)
-  }
-}
-
-module.exports = Industry
+export { BaseModel, User, Industry }
