@@ -1,6 +1,6 @@
 # Adonis Lucid Filter
 
-**Note:** Docs [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tree/v1)
+Version [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tree/v1)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
