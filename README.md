@@ -1,26 +1,20 @@
 # Adonis Lucid Filter
 
-**Note:** New release [for **Adonis v5**](https://github.com/lookinlab/adonis-lucid-filter/tree/v2) is published
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
-[![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
-
-> Works with @adonisjs/lucid ^6.1.*
-
 This addon adds the functionality to filter Lucid Models
-> Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
+> Works with @adonisjs/lucid ^6.1.* (Adonis v4)
 
 ## Introduction
+> Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
+
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
 
-`/users?name=er&last_name=&company_id=2&roles[]=1&roles[]=4&roles[]=7&industry=5`
+`/users?name=Tony&last_name=&company_id=2&roles[]=1&roles[]=4&roles[]=7&industry=5`
 
 `request.all()` or `request.get()` will return:
 
 ```json
 {
-  "name": "er",
+  "name": "Tony",
   "last_name": "",
   "company_id": 2,
   "roles": [1, 4, 7],
@@ -88,13 +82,13 @@ Make sure to install it using [`adonis-cli`](https://github.com/adonisjs/adonis-
 
 ```bash
 # adonis
-adonis install adonis-lucid-filter
+adonis install adonis-lucid-filter@1.0.5
 
 # npm
-npm i adonis-lucid-filter
+npm i adonis-lucid-filter@1.0.5
 
 # yarn
-yarn add adonis-lucid-filter
+yarn add adonis-lucid-filter@1.0.5
 ```
 
 ## Usage
@@ -134,7 +128,7 @@ To define methods for the following input:
 ```json
 {
   "company_id": 5,
-  "name": "Tuck",
+  "name": "Tony",
   "mobile_phone": "888555"
 }
 ```
