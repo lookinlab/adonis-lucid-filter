@@ -1,16 +1,7 @@
-'use strict'
-
-/*
- * adonis-lucid-filter
- *
- * (c) Lookin Anton <lookin@lookinlab.ru>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+process.env.TS_NODE_FILES = true
+require('ts-node/register')
 
 const { configure } = require('japa')
-
 configure({
-  files: ['test/*.spec.js']
+  files: ['test/*.spec.ts']
 })
