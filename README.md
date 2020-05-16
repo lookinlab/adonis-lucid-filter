@@ -35,7 +35,7 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public index ({ request }: HttpContextContract) {
+  public async index ({ request }: HttpContextContract): Promise<User[]> {
     const { company_id, last_name, name, industry } = request.get()
   
     const query = User.query().where('company_id', +company_id)
@@ -64,7 +64,7 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public index ({ request }: HttpContextContract) {
+  public async index ({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.all()).exec()
   }
 }
@@ -227,13 +227,13 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public index ({ request }: HttpContextContract) {
+  public async index ({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.all()).exec()
   }
 
   // or with paginate method
 
-  public index ({ request }: HttpContextContract) {
+  public async index ({ request }: HttpContextContract): Promise<SimplePaginatorContract<User[]>> {
     const input = request.all()
     const page = input.page || 1
 
@@ -255,11 +255,10 @@ import UserFilter from 'App/Models/Filters/UserFilter'
 
 export default class UserController {
 
-  public index ({ request, auth }: HttpContextContract) {
+  public async index ({ request, auth }: HttpContextContract): Promise<User[]> {
     const Filter = auth.user.isAdmin() ? AdminFilter : UserFilter
-    
-    return await User.filter(request.all(), Filter).exec()
-  }
-  
+
+    return User.filter(request.all(), Filter).exec()
+  } 
 }
 ```
