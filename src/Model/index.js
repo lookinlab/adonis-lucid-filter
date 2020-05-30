@@ -207,7 +207,7 @@ class ModelFilter {
     for (const key in input) {
       const value = input[key]
 
-      if (value !== '' && value !== null) {
+      if (value !== '' && value !== null && value !== undefined) {
         filterableInput[key] = value
       }
     }

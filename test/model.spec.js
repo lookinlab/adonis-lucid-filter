@@ -32,7 +32,8 @@ test.group('ModelFilter', (group) => {
       email: '',
       company_id: 2,
       roles: [1, 4, 7],
-      industry: 5
+      industry: 5,
+      surname: undefined
     }
     filter = new TestModelFilter(User.query(), input)
   })
@@ -46,6 +47,7 @@ test.group('ModelFilter', (group) => {
 
     for (const key in filteredInput) {
       assert.notEqual(filteredInput[key], '')
+      assert.notEqual(filteredInput[key], undefined)
     }
   })
 
