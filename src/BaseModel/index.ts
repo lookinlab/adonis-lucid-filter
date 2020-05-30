@@ -82,7 +82,7 @@ export default class BaseModelFilter implements LucidFilter {
     for (let key in input) {
       const value = input[key]
 
-      if (value !== '' && value !== null) {
+      if (value !== '' && value !== null && value !== undefined) {
         filteredInput[key] = value
       }
     }
