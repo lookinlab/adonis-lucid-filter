@@ -11,7 +11,7 @@ import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
 import { LucidModel } from '@ioc:Adonis/Lucid/Model'
 
 export default function (modelFilter: LucidFilterContract) {
-  return function (constructor: LucidModel) {
+  return function <T extends LucidModel>(constructor: T) {
     constructor['filter'] = function (
       input: object,
       Filter = modelFilter

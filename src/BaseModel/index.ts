@@ -42,7 +42,7 @@ export default class BaseModelFilter implements LucidFilter {
     this.$blacklist = this.constructor.blacklist
   }
 
-  public handle (): ModelQueryBuilderContract<LucidModel, LucidRow> {
+  public handle (): any {
     if (this.setup && typeof this.setup === 'function') {
       this.setup(this.$query)
     }

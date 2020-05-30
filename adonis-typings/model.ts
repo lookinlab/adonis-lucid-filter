@@ -20,7 +20,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
 
     setup?($query: any): void;
     whitelistMethod(method: string): boolean;
-    handle(): ModelQueryBuilderContract<LucidModel, LucidRow>;
+    handle(): any;
 
     $filterByInput(): void;
     $getFilterMethod(key: string): string;
@@ -43,7 +43,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   }
 
   interface FilterableDecoratorContract {
-    (filter: LucidFilterContract): (constructor: LucidModel) => void;
+    (filter: LucidFilterContract): <T extends LucidModel>(constructor: T) => void;
   }
 
   export const filterable: FilterableDecoratorContract

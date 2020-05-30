@@ -11,9 +11,10 @@ declare module '@ioc:Adonis/Lucid/Model' {
   import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
 
   interface LucidModel {
-    filter(
+    filter<Model extends LucidModel, Result extends any = InstanceType<Model>>(
+      this: Model,
       input: object,
       filter?: LucidFilterContract
-    ): ModelQueryBuilderContract<LucidModel, LucidRow>
+    ): ModelQueryBuilderContract<Model, Result>
   }
 }
