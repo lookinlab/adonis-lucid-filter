@@ -30,7 +30,7 @@ test.group('MakeModelFilter', (group) => {
     const app = new Application(join(fs.basePath, 'build'), {} as any, {} as any, {})
 
     const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
-    makeModelFilter.name = 'user'
+    makeModelFilter.name = 'User'
     await makeModelFilter.handle()
 
     const userFilter = await fs.get('app/Models/Filters/UserFilter.ts')
@@ -38,7 +38,32 @@ test.group('MakeModelFilter', (group) => {
 
     assert.deepStrictEqual(
       toNewlineArray(userFilter),
-      toNewlineArray(schemaTemplate.replace('{{ filename }}', 'UserFilter')),
+      toNewlineArray(
+        schemaTemplate
+          .replace('{{ filename }}', 'UserFilter')
+          .replace(/{{ model }}/g, 'User')
+      ),
+    )
+  })
+
+  test('make a model when name as lowercase', async (assert) => {
+    process.env.ADONIS_ACE_CWD = fs.basePath
+    const app = new Application(join(fs.basePath, 'build'), {} as any, {} as any, {})
+
+    const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
+    makeModelFilter.name = 'profile'
+    await makeModelFilter.handle()
+
+    const profileFilter = await fs.get('app/Models/Filters/ProfileFilter.ts')
+    const schemaTemplate = await templatesFs.get('filter.txt')
+
+    assert.deepStrictEqual(
+      toNewlineArray(profileFilter),
+      toNewlineArray(
+        schemaTemplate
+          .replace('{{ filename }}', 'ProfileFilter')
+          .replace(/{{ model }}/g, 'Profile')
+      ),
     )
   })
 })

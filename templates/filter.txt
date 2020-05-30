@@ -1,7 +1,12 @@
 import { BaseModelFilter } from '@ioc:Adonis/Addons/LucidFilter'
+import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
+import {{ model }} from 'App/Models/{{ model }}'
 
 export default class {{ filename }} extends BaseModelFilter {
-  constructor(public $query, public $input) {
+  constructor(
+    public $query: ModelQueryBuilderContract<typeof {{ model }}, {{ model }}>,
+    public $input: object
+  ) {
     super($query, $input)
   }
 

@@ -28,15 +28,23 @@ export default class MakeModelFilter extends BaseCommand {
     const path = this.application.resolveNamespaceDirectory('filters')
 
     this.name = this.name.replace(/Filter$/g, '')
-    this.name += 'Filter'
+    this.name = this.name.replace(
+      this.name.charAt(0),
+      this.name.charAt(0).toUpperCase()
+    )
 
     this
       .generator
-      .addFile(this.name, { pattern: 'pascalcase', form: 'singular' })
+      .addFile(this.name, {
+        suffix: 'Filter',
+        pattern: 'pascalcase',
+        form: 'singular',
+      })
       .stub(stub)
       .destinationDir(path || 'app/Models/Filters')
       .useMustache()
       .appRoot(this.application.cliCwd || this.application.appRoot)
+      .apply({ model: this.name })
 
     await this.generator.run()
   }
