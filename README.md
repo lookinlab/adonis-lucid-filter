@@ -141,11 +141,11 @@ You would use the following methods:
 
 ```js
 import { BaseModelFilter } from '@ioc:Adonis/Addons/LucidFilter'
+import { ModelQueryBuilderContract } from '@ioc:Adonis/Core/Lucid'
+import User from 'App/Models/User'
 
 export default class UserFilter extends BaseModelFilter {
-  constructor(public $query, public $input) {
-    super($query, $input)
-  }
+  public $query: ModelQueryBuilderContract<typeof User, User>
   
   public static blacklist: string[] = ['secretMethod']
 
