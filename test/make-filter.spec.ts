@@ -33,7 +33,7 @@ test.group('MakeModelFilter', (group) => {
   test('make a model inside the default directory', async (assert) => {
     const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
     makeModelFilter.name = 'User'
-    await makeModelFilter.handle()
+    await makeModelFilter.run()
 
     const userFilter = await fs.get('app/Models/Filters/UserFilter.ts')
     const schemaTemplate = await templatesFs.get('filter.txt')
@@ -51,7 +51,7 @@ test.group('MakeModelFilter', (group) => {
   test('make a model when name as lowercase', async (assert) => {
     const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
     makeModelFilter.name = 'profile'
-    await makeModelFilter.handle()
+    await makeModelFilter.run()
 
     const profileFilter = await fs.get('app/Models/Filters/ProfileFilter.ts')
     const schemaTemplate = await templatesFs.get('filter.txt')
