@@ -1,5 +1,5 @@
 import { BaseModelFilter } from '@ioc:Adonis/Addons/LucidFilter'
-import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
+import { ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 import {{ model }} from 'App/Models/{{ model }}'
 
 export default class {{ filename }} extends BaseModelFilter {

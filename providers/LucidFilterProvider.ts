@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { IocContract } from '@adonisjs/fold'
+import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import BaseModelFilter from '../src/BaseModel'
 import filterable from '../src/Decorator'
 
@@ -15,11 +15,11 @@ import filterable from '../src/Decorator'
  * Provider to register lucid filter with the IoC container
  */
 export default class LucidFilterProvider {
-  constructor (protected container: IocContract) {
-  }
+  public static needsApplication = true
+  constructor (protected app: ApplicationContract) {}
 
   public register (): void {
-    this.container.singleton('Adonis/Addons/LucidFilter', () => ({
+    this.app.container.singleton('Adonis/Addons/LucidFilter', () => ({
       filterable,
       BaseModelFilter,
     }))

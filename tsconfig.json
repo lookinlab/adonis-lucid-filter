@@ -5,6 +5,7 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "types": [
+      "@adonisjs/core",
       "@adonisjs/lucid"
     ]
   },
