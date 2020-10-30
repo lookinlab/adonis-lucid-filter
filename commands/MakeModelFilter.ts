@@ -8,7 +8,7 @@
  */
 
 import { join } from 'path'
-import { BaseCommand, args } from '@adonisjs/ace'
+import { BaseCommand, args } from '@adonisjs/core/build/standalone'
 
 export default class MakeModelFilter extends BaseCommand {
   public static commandName = 'make:filter'
@@ -21,9 +21,9 @@ export default class MakeModelFilter extends BaseCommand {
   public name: string
 
   /**
-   * Execute command
+   * Run command
    */
-  public async handle (): Promise<void> {
+  public async run (): Promise<void> {
     const stub = join(__dirname, '..', 'templates', 'filter.txt')
     const path = this.application.resolveNamespaceDirectory('filters')
 
