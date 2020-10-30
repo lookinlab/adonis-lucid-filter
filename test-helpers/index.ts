@@ -8,12 +8,19 @@
  */
 
 import { join } from 'path'
-import { Filesystem } from '@poppinss/dev-utils'
 import knex from 'knex'
+import { Filesystem } from '@poppinss/dev-utils'
+import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import { Application } from '@adonisjs/core/build/standalone'
+import { BaseModel } from '@adonisjs/lucid/build/src/Orm/BaseModel'
+import { Adapter } from '@adonisjs/lucid/build/src/Orm/Adapter'
+import { Database } from '@adonisjs/lucid/build/src/Database'
+import { SqliteConfig } from '@ioc:Adonis/Lucid/Database'
+import { LucidModel } from '@ioc:Adonis/Lucid/Model'
 
-const fs = new Filesystem(join(__dirname, '__app'))
+const fs = new Filesystem(join(__dirname, 'tmp'))
 
-export const dbConfig = {
+export const dbConfig: SqliteConfig = {
   client: 'sqlite3',
   connection: { filename: join(fs.basePath, 'db.sqlite3') },
   debug: false,
@@ -87,4 +94,58 @@ export async function cleanup () {
  */
 export function toNewlineArray (contents: string): string[] {
   return contents.split(/\r?\n/)
+}
+
+/**
+ * Setup application
+ */
+export async function setupApplication (): Promise<ApplicationContract> {
+  await fs.add('.env', '')
+  await fs.add(
+    'config/app.ts',
+    `
+      export const appKey = 'averylong32charsrandomsecretkey'
+      export const http = {
+        cookie: {},
+        trustProxy: () => true,
+      }
+    `
+  )
+
+  await fs.add(
+    'config/database.ts',
+    `
+      const dbConfig = undefined
+      export default dbConfig
+    `
+  )
+
+  const app = new Application(fs.basePath, 'test', {
+    aliases: { App: './app' },
+    providers: ['@adonisjs/core'],
+  })
+
+  app.setup()
+  app.registerProviders()
+  await app.bootProviders()
+
+  return app
+}
+
+/**
+ * Get BaseModel of application
+ */
+export function getBaseModel (app: ApplicationContract) {
+  BaseModel.$container = app.container
+  BaseModel.$adapter = new Adapter(new Database(
+    {
+      connection: 'sqlite',
+      connections: { sqlite: dbConfig as SqliteConfig },
+    },
+    app.container.use('Adonis/Core/Logger'),
+    app.container.use('Adonis/Core/Profiler'),
+    app.container.use('Adonis/Core/Event')
+  ))
+
+  return (BaseModel as unknown) as LucidModel
 }

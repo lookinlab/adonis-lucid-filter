@@ -8,33 +8,34 @@
  */
 
 import test from 'japa'
-import { setup, cleanup } from '../test-helpers'
+import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
 import BaseModelFilter from '../src/BaseModel'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
-import User from '../test-helpers/models/User'
+import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import { LucidModel } from '@ioc:Adonis/Lucid/Model'
 
 test.group('ModelFilter', (group) => {
-  let filter
-  let input
+  let app: ApplicationContract
+  let BaseModel: LucidModel
 
-  group.before(() => setup())
-  group.beforeEach(() => {
-    User.boot()
+  group.before(async () => {
+    app = await setupApplication()
+    BaseModel = getBaseModel(app)
 
-    input = {
+    await setup()
+  })
+
+  group.after(() => cleanup())
+
+  test('remove empty input', (assert) => {
+    const filteredInput = TestModelFilter.removeEmptyInput({
       username: 'Tony',
       email: '',
       company_id: 2,
       roles: [1, 4, 7],
       industry: 5,
       surname: undefined,
-    }
-    filter = new TestModelFilter(User.query(), input)
-  })
-  group.after(() => cleanup())
-
-  test('remove empty input', (assert) => {
-    const filteredInput = TestModelFilter.removeEmptyInput(input)
+    })
 
     for (const key in filteredInput) {
       assert.notStrictEqual(filteredInput[key], '')
@@ -43,6 +44,18 @@ test.group('ModelFilter', (group) => {
   })
 
   test('get filter method name in camelCase and without _id', (assert) => {
+    class User extends BaseModel {}
+    User.boot()
+
+    const filter = new TestModelFilter(User.query(), {
+      username: 'Tony',
+      email: '',
+      company_id: 2,
+      roles: [1, 4, 7],
+      industry: 5,
+      surname: undefined,
+    })
+
     const standard = {
       username: 'username',
       company_id: 'company',
@@ -55,6 +68,9 @@ test.group('ModelFilter', (group) => {
   })
 
   test('get filter method name in camelCase and with _id', (assert) => {
+    class User extends BaseModel {}
+    User.boot()
+
     class UserFilter extends BaseModelFilter {
       public static dropId: boolean = false
     }
@@ -64,7 +80,17 @@ test.group('ModelFilter', (group) => {
   })
 
   test('whitelist method and method is callable', (assert) => {
-    const userFilter = new TestModelFilter(User.query(), input)
+    class User extends BaseModel {}
+    User.boot()
+
+    const userFilter = new TestModelFilter(User.query(), {
+      username: 'Tony',
+      email: '',
+      company_id: 2,
+      roles: [1, 4, 7],
+      industry: 5,
+      surname: undefined,
+    })
     userFilter.handle()
 
     assert.strictEqual(userFilter.$methodIsCallable('company'), false)

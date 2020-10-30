@@ -11,24 +11,26 @@ import test from 'japa'
 import { join } from 'path'
 import { Kernel } from '@adonisjs/ace'
 import { Filesystem } from '@poppinss/dev-utils'
-import { Application } from '@adonisjs/application/build/standalone'
-import { toNewlineArray } from '../test-helpers'
+import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import { toNewlineArray, setupApplication } from '../test-helpers'
 
 import MakeModelFilter from '../commands/MakeModelFilter'
 
-const fs = new Filesystem(join(__dirname, '__app'))
-const templatesFs = new Filesystem(join(__dirname, '..', 'templates'))
-
 test.group('MakeModelFilter', (group) => {
-  group.afterEach(async () => {
-    delete process.env.ADONIS_ACE_CWD
-    await fs.cleanup()
+  let app: ApplicationContract
+  let fs: Filesystem
+  let templatesFs: Filesystem
+
+  group.before(async () => {
+    app = await setupApplication()
+
+    fs = new Filesystem(app.appRoot)
+    templatesFs = new Filesystem(join(app.appRoot, '../..', 'templates'))
   })
 
-  test('make a model inside the default directory', async (assert) => {
-    process.env.ADONIS_ACE_CWD = fs.basePath
-    const app = new Application(join(fs.basePath, 'build'), {} as any, {} as any, {})
+  group.after(() => fs.cleanup())
 
+  test('make a model inside the default directory', async (assert) => {
     const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
     makeModelFilter.name = 'User'
     await makeModelFilter.handle()
@@ -47,9 +49,6 @@ test.group('MakeModelFilter', (group) => {
   })
 
   test('make a model when name as lowercase', async (assert) => {
-    process.env.ADONIS_ACE_CWD = fs.basePath
-    const app = new Application(join(fs.basePath, 'build'), {} as any, {} as any, {})
-
     const makeModelFilter = new MakeModelFilter(app, new Kernel(app))
     makeModelFilter.name = 'profile'
     await makeModelFilter.handle()
