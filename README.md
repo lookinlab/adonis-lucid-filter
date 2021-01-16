@@ -6,7 +6,7 @@ Version [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tre
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
 [![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
 
-> Works with @adonisjs/lucid@alpha (^9.*.*)
+> Works with @adonisjs/lucid@alpha (^10.*.*)
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
@@ -29,7 +29,7 @@ Example, we want to return a list of users filtered by multiple parameters. When
 
 To filter by all those parameters we would need to do something like:
 
-```js
+```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
@@ -58,7 +58,7 @@ export default class UserController {
 
 To filter that same input with Lucid Filters:
 
-```js
+```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
@@ -89,19 +89,23 @@ node ace invoke adonis-lucid-filter
 Make sure to register the provider inside `.adonisrc.json` file.
 
 ```json
-"providers": [
-  "...other packages",
-  "adonis-lucid-filter"
-]
+{
+  "providers": [
+    "...other packages",
+    "adonis-lucid-filter"
+  ] 
+}
 ```
 
 For TypeScript projects add to `tsconfig.json` file:
 ```json
-"compilerOptions": {
-  "types": [
-    "...other packages",
-    "adonis-lucid-filter"
-  ]
+{
+  "compilerOptions": {
+    "types": [
+      "...other packages",
+      "adonis-lucid-filter"
+    ]
+  } 
 }
 ```
 
@@ -139,7 +143,7 @@ To define methods for the following input:
 
 You would use the following methods:
 
-```js
+```ts
 import { BaseModelFilter } from '@ioc:Adonis/Addons/LucidFilter'
 import { ModelQueryBuilderContract } from '@ioc:Adonis/Core/Lucid'
 import User from 'App/Models/User'
@@ -155,8 +159,9 @@ export default class UserFilter extends BaseModelFilter {
   }
 
   name (name: string) {
-    this.$query.where(function () {
-      this.where('first_name', 'LIKE', `%${name}%`)
+    this.$query.where((builder) => {
+      builder
+        .where('first_name', 'LIKE', `%${name}%`)
         .orWhere('last_name', 'LIKE', `%${name}%`)
     })
   }
@@ -178,7 +183,7 @@ Any methods defined in the `blacklist` array will not be called by the filter. T
 The `whitelistMethod()` methods can be used to dynamically blacklist methods.
 
 Example:
-```js
+```ts
 setup ($query) {
   this.whitelistMethod('secretMethod')
   this.$query.where('is_admin', true)
@@ -192,7 +197,7 @@ In the example above `secretMethod()` will not be called, even if there is a `se
 
 #### Static properties
 
-```js
+```ts
 export default class UserFilter extends BaseModelFilter {
   // Blacklisted methods
   public static blacklist: string[] = []
@@ -209,7 +214,7 @@ export default class UserFilter extends BaseModelFilter {
 
 ### Applying The Filter To A Model
 
-```js
+```ts
 import UserFilter from 'App/Models/Filters/UserFilter'
 import { filterable } from '@ioc:Adonis/Addons/LucidFilter'
 
@@ -221,7 +226,7 @@ export default class User extends BaseModel {
 
 This gives you access to the `filter()` method that accepts an object of input:
 
-```js
+```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
@@ -233,10 +238,9 @@ export default class UserController {
 
   // or with paginate method
 
-  public async index ({ request }: HttpContextContract): Promise<SimplePaginatorContract<User[]>> {
-    const input = request.all()
-    const page = input.page || 1
-
+  public async index ({ request }: HttpContextContract): Promise<SimplePaginatorContract<User>> {
+    const { page = 1, ...input } = request.all()
+    
     return User.filter(input).paginate(page, 15)
   }
 
@@ -248,7 +252,7 @@ export default class UserController {
 You can define the filter dynamically by passing the filter to use as the second parameter of the filter() method.
 Defining a filter dynamically will take precedent over any other filters defined for the model.
 
-```js
+```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import AdminFilter from 'App/Models/Filters/AdminFilter'
 import UserFilter from 'App/Models/Filters/UserFilter'
@@ -262,3 +266,6 @@ export default class UserController {
   } 
 }
 ```
+
+## Thanks for the stars! :star:
+
