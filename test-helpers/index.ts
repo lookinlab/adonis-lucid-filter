@@ -49,6 +49,7 @@ export async function setup (destroyDb: boolean = true) {
     await db.schema.createTable('industries', (table) => {
       table.increments()
       table.string('title')
+      table.string('text')
       table.integer('revenue')
       table.timestamps()
     })

@@ -13,8 +13,9 @@ import filterable from '../src/Decorator'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import { column } from '@adonisjs/lucid/build/src/Orm/Decorators'
+import { column, manyToMany } from '@adonisjs/lucid/build/src/Orm/Decorators'
 import { LucidModel } from '@ioc:Adonis/Lucid/Model'
+import { ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 
 test.group('BaseModelFilter', (group) => {
   let app: ApplicationContract
@@ -74,5 +75,100 @@ test.group('BaseModelFilter', (group) => {
 
     const admin = await User.filter!({ isAdmin: 1 }, TestModelFilter).first()
     assert.deepStrictEqual(admin!.toJSON(), user1.toJSON())
+  })
+
+  test('filter model through filtration scope', async (assert) => {
+    @filterable(TestModelFilter)
+    class Industry extends BaseModel {
+      @column()
+      public title: string
+
+      @column()
+      public text: string
+    }
+    Industry.boot()
+
+    const industry1 = new Industry()
+    industry1.fill({ title: 'Tony industry', text: 'Text for Tony industry' })
+    await industry1.save()
+
+    const industry2 = new Industry()
+    industry2.fill({ title: 'Adonis industry', text: 'Text for Adonis industry' })
+    await industry2.save()
+
+    const tonyIndustry = await Industry.query()
+      .apply(scopes => scopes.filtration({ title: 'Tony industry' }))
+      .first()
+    assert.deepStrictEqual(tonyIndustry!.toJSON(), industry1.toJSON())
+
+    const adonisIndustry = await Industry.query()
+      .apply(scopes => scopes.filtration({ text: 'Adonis' }))
+      .first()
+    assert.deepStrictEqual(adonisIndustry!.toJSON(), industry2.toJSON())
+  })
+
+  test('filter relations through filtration scope', async (assert) => {
+    @filterable(TestModelFilter)
+    class User extends BaseModel {
+      @column()
+      public id: number
+
+      @column()
+      public username: string
+
+      @column()
+      public email: string
+
+      @column()
+      public isAdmin: number
+
+      @column()
+      public companyId: number
+
+      @manyToMany(() => Industry)
+      public industries: ManyToMany<typeof Industry>
+    }
+    User.boot()
+
+    const user = new User()
+    user.fill({ username: 'Lookin', email: 'lookin@test.ru', isAdmin: 1, companyId: 1 })
+    await user.save()
+
+    @filterable(TestModelFilter)
+    class Industry extends BaseModel {
+      @column()
+      public id: number
+
+      @column()
+      public title: string
+
+      @column()
+      public text: string
+
+      @column()
+      public authorId: number
+    }
+    Industry.boot()
+
+    await user.related('industries').createMany([
+      {
+        title: 'Industry 1',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 2',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 3',
+        text: 'Industry by Adonis',
+      },
+    ])
+
+    const lookinIndustries = await user.related('industries').query()
+      .apply(scopes => scopes.filtration({ text: 'Lookin' }))
+      .exec()
+
+    assert.lengthOf(lookinIndustries, 2)
   })
 })

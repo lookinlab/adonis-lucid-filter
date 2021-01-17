@@ -27,4 +27,12 @@ export default class TestModelFilter extends BaseModelFilter {
   public isAdmin (flag) {
     this.$query.where('is_admin', flag)
   }
+
+  public title (value: string): void {
+    this.$query.where('title', 'LIKE', `%${value}%`)
+  }
+
+  public text (value: string): void {
+    this.$query.where('text', 'LIKE', `%${value}%`)
+  }
 }
