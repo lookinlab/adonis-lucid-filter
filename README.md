@@ -243,7 +243,6 @@ export default class UserController {
     
     return User.filter(input).paginate(page, 15)
   }
-
 }
 ```
 
@@ -266,6 +265,33 @@ export default class UserController {
   } 
 }
 ```
+
+### Filtering relations (version >= 2.1)
+
+For filtering relations of model may be use scope `filtration`, example:
+
+```ts
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Models/User'
+
+export default class UserPostsController {
+  /**
+   * Get a list posts of user
+   * GET /users/:user_id/posts
+   */
+  public async index ({ params, request }: HttpContextContract): Promise<Post[]> {
+    const user: User = await User.findOrFail(params.user_id)
+
+    return user.related('posts').query()
+      .apply(scopes => scopes.filtration(request.all()))
+      .exec()
+  }
+}
+```
+
+Documentation [Query Scopes](https://preview.adonisjs.com/guides/models/query-scopes)
+
+**Note:** At relation model must have defined Filter through decorator `@filterable()`
 
 ## Thanks for the stars! :star:
 
