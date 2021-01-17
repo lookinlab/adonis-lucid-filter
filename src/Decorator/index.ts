@@ -8,16 +8,27 @@
  */
 
 import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-import { LucidModel } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel, ModelQueryBuilderContract, QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Model'
 
 export default function (modelFilter: LucidFilterContract) {
-  return function <T extends LucidModel>(constructor: T) {
-    constructor['filter'] = function (
+  return function <Model extends LucidModel>(constructor: Model) {
+    /**
+     * Scope filtration function
+     */
+    const scopeFn = (
+      query: ModelQueryBuilderContract<Model>,
       input: object,
       Filter = modelFilter
-    ) {
-      const filter = new Filter(constructor.query(), input)
-      return filter.handle()
+    ) => (new Filter(query, input)).handle()
+
+    /**
+     * Filter function
+     */
+    const filterFn = (input: object, Filter = modelFilter) => {
+      return scopeFn(constructor.query(), input, Filter)
     }
+
+    constructor['filter'] = filterFn
+    constructor['filtration'] = scopeFn as QueryScope<QueryScopeCallback>
   }
 }

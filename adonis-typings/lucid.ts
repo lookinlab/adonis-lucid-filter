@@ -16,5 +16,7 @@ declare module '@ioc:Adonis/Lucid/Model' {
       input: object,
       filter?: LucidFilterContract
     ): ModelQueryBuilderContract<Model, Result>
+
+    filtration: QueryScope<QueryScopeCallback>
   }
 }
