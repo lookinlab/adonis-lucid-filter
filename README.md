@@ -6,7 +6,7 @@ Version [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tre
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
 [![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
 
-> Works with @adonisjs/lucid@alpha (^10.*.*)
+> Works with @adonisjs/lucid (^14.*.*)
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
@@ -16,7 +16,7 @@ Example, we want to return a list of users filtered by multiple parameters. When
 
 `/users?name=Tony&last_name=&company_id=2&industry=5`
 
-`request.all()` or `request.get()` will return:
+`request.all()` or `request.qs()` will return:
 
 ```json
 {
@@ -35,8 +35,8 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public async index ({ request }: HttpContextContract): Promise<User[]> {
-    const { company_id, last_name, name, industry } = request.get()
+  public async index({ request }: HttpContextContract): Promise<User[]> {
+    const { company_id, last_name, name, industry } = request.qs()
   
     const query = User.query().where('company_id', +company_id)
 
@@ -64,8 +64,8 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public async index ({ request }: HttpContextContract): Promise<User[]> {
-    return User.filter(request.all()).exec()
+  public async index({ request }: HttpContextContract): Promise<User[]> {
+    return User.filter(request.qs()).exec()
   }
 }
 ```
@@ -76,11 +76,11 @@ Make sure to install it using `npm` or `yarn`.
 
 ```bash
 # npm
-npm i adonis-lucid-filter@alpha
+npm i adonis-lucid-filter
 node ace invoke adonis-lucid-filter
 
 # yarn
-yarn add adonis-lucid-filter@alpha
+yarn add adonis-lucid-filter
 node ace invoke adonis-lucid-filter
 ```
 
@@ -154,11 +154,11 @@ export default class UserFilter extends BaseModelFilter {
   public static blacklist: string[] = ['secretMethod']
 
   // This will filter 'company_id' OR 'company'
-  company (id: number) {
+  company(id: number) {
     this.$query.where('company_id', id)
   }
 
-  name (name: string) {
+  name(name: string) {
     this.$query.where((builder) => {
       builder
         .where('first_name', 'LIKE', `%${name}%`)
@@ -166,11 +166,11 @@ export default class UserFilter extends BaseModelFilter {
     })
   }
 
-  mobilePhone (phone: string) {
+  mobilePhone(phone: string) {
     this.$query.where('mobile_phone', 'LIKE', `${phone}%`)
   }
 
-  secretMethod (secretParameter: any) {
+  secretMethod(secretParameter: any) {
     this.$query.where('some_column', true)
   }
 }
@@ -184,7 +184,7 @@ The `whitelistMethod()` methods can be used to dynamically blacklist methods.
 
 Example:
 ```ts
-setup ($query) {
+setup($query) {
   this.whitelistMethod('secretMethod')
   this.$query.where('is_admin', true)
 }
@@ -232,14 +232,14 @@ import User from 'App/Models/User'
 
 export default class UserController {
 
-  public async index ({ request }: HttpContextContract): Promise<User[]> {
-    return User.filter(request.all()).exec()
+  public async index({ request }: HttpContextContract): Promise<User[]> {
+    return User.filter(request.qs()).exec()
   }
 
   // or with paginate method
 
-  public async index ({ request }: HttpContextContract): Promise<SimplePaginatorContract<User>> {
-    const { page = 1, ...input } = request.all()
+  public async index({ request }: HttpContextContract): Promise<SimplePaginatorContract<User>> {
+    const { page = 1, ...input } = request.qs()
     
     return User.filter(input).paginate(page, 15)
   }
@@ -258,10 +258,10 @@ import UserFilter from 'App/Models/Filters/UserFilter'
 
 export default class UserController {
 
-  public async index ({ request, auth }: HttpContextContract): Promise<User[]> {
+  public async index({ request, auth }: HttpContextContract): Promise<User[]> {
     const Filter = auth.user.isAdmin() ? AdminFilter : UserFilter
 
-    return User.filter(request.all(), Filter).exec()
+    return User.filter(request.qs(), Filter).exec()
   } 
 }
 ```
@@ -279,11 +279,11 @@ export default class UserPostsController {
    * Get a list posts of user
    * GET /users/:user_id/posts
    */
-  public async index ({ params, request }: HttpContextContract): Promise<Post[]> {
+  public async index({ params, request }: HttpContextContract): Promise<Post[]> {
     const user: User = await User.findOrFail(params.user_id)
 
     return user.related('posts').query()
-      .apply(scopes => scopes.filtration(request.all()))
+      .apply(scopes => scopes.filtration(request.qs()))
       .exec()
   }
 }
