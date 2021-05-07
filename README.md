@@ -1,7 +1,7 @@
 # Adonis Lucid Filter
 
 This addon adds the functionality to filter Lucid Models
-> Works with @adonisjs/lucid ^6.1.* (Adonis v4)
+> Works with @adonisjs/lucid@legacy ^6.1.* (Adonis v4)
 
 ## Introduction
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
@@ -82,13 +82,13 @@ Make sure to install it using [`adonis-cli`](https://github.com/adonisjs/adonis-
 
 ```bash
 # adonis
-adonis install adonis-lucid-filter@1.0.5
+adonis install adonis-lucid-filter@legacy
 
 # npm
-npm i adonis-lucid-filter@1.0.5
+npm i adonis-lucid-filter@legacy
 
 # yarn
-yarn add adonis-lucid-filter@1.0.5
+yarn add adonis-lucid-filter@legacy
 ```
 
 ## Usage
