@@ -8,7 +8,7 @@
  */
 
 import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-import { LucidModel, ModelQueryBuilderContract, QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel, ModelQueryBuilderContract, QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Orm'
 
 export default function (modelFilter: LucidFilterContract) {
   return function <Model extends LucidModel>(constructor: Model) {

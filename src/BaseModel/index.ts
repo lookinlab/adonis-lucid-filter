@@ -11,7 +11,7 @@
 
 import camelCase from 'lodash/camelCase'
 import { LucidFilter, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 
 function StaticImplements<T> () {
   return (_t: T) => {}

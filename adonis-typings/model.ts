@@ -8,7 +8,7 @@
  */
 
 declare module '@ioc:Adonis/Addons/LucidFilter' {
-  import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Model'
+  import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 
   /**
    * Lucid filter instance

@@ -16,7 +16,7 @@ import { BaseModel } from '@adonisjs/lucid/build/src/Orm/BaseModel'
 import { Adapter } from '@adonisjs/lucid/build/src/Orm/Adapter'
 import { Database } from '@adonisjs/lucid/build/src/Database'
 import { SqliteConfig } from '@ioc:Adonis/Lucid/Database'
-import { LucidModel } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 
 const fs = new Filesystem(join(__dirname, 'tmp'))
 

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-declare module '@ioc:Adonis/Lucid/Model' {
+declare module '@ioc:Adonis/Lucid/Orm' {
   import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
 
   interface LucidModel {
