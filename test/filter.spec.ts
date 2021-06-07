@@ -14,7 +14,7 @@ import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import { column, manyToMany } from '@adonisjs/lucid/build/src/Orm/Decorators'
-import { LucidModel } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 
 test.group('BaseModelFilter', (group) => {

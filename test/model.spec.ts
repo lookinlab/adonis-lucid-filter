@@ -12,7 +12,7 @@ import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
 import BaseModelFilter from '../src/BaseModel'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import { LucidModel } from '@ioc:Adonis/Lucid/Model'
+import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 
 test.group('ModelFilter', (group) => {
   let app: ApplicationContract
