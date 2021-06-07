@@ -6,10 +6,14 @@ Version [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tre
 [![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
 [![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
 
-> Works with @adonisjs/lucid (^14.*.*)
-
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
+
+## Versions
+> **Note**: Check before install :point_down:
+
+- adonis-lucid-filter@latest (^3.\*.\*) => @adonisjs/lucid@^15.\*.*
+- adonis-lucid-filter@2.\*.\* => @adonisjs/lucid@14.\*.*
 
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
