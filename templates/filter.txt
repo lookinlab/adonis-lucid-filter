@@ -5,7 +5,7 @@ import {{ model }} from 'App/Models/{{ model }}'
 export default class {{ filename }} extends BaseModelFilter {
   public $query: ModelQueryBuilderContract<typeof {{ model }}, {{ model }}>
 
-  // public method(value: any): void {
+  // public method (value: any): void {
   //   this.$query.where('name', value)
   // }
 }
