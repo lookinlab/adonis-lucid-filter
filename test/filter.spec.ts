@@ -9,13 +9,16 @@
 
 import test from 'japa'
 import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
-import { filterable } from '../src/Decorators'
+import { filter } from '../src/Decorators'
+import { Filterable } from '../src/Mixin'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import { column, manyToMany } from '@adonisjs/lucid/build/src/Orm/Decorators'
 import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { Filter } from '@ioc:Adonis/Addons/LucidFilter'
+import { compose } from '@poppinss/utils/build/src/Helpers'
 
 test.group('BaseModelFilter', (group) => {
   let app: ApplicationContract
@@ -30,24 +33,30 @@ test.group('BaseModelFilter', (group) => {
   group.after(() => cleanup())
 
   test('exists filter method when define ModelFilter to Filterable trait', (assert) => {
-    @filterable(TestModelFilter)
-    class TestModel extends BaseModel {}
+    class TestModel extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+    }
     TestModel.boot()
 
-    assert.instanceOf(TestModel.filter!({}), ModelQueryBuilder)
+    assert.instanceOf(TestModel.filter({}), ModelQueryBuilder)
   })
 
   test('exists filter method when define ModelFilter to function filter', (assert) => {
-    @filterable(TestModelFilter)
-    class TestModel extends BaseModel {}
+    class TestModel extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+    }
     TestModel.boot()
 
-    assert.instanceOf(TestModel.filter!({}, TestModelFilter), ModelQueryBuilder)
+    assert.instanceOf(TestModel.filter({}, TestModelFilter), ModelQueryBuilder)
   })
 
   test('filter model by input data', async (assert) => {
-    @filterable(TestModelFilter)
-    class User extends BaseModel {
+    class User extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+
       @column()
       public username: string
 
@@ -70,16 +79,18 @@ test.group('BaseModelFilter', (group) => {
     user2.fill({ username: 'Adonis', email: 'test2@test.ru', isAdmin: 0, companyId: 2 })
     await user2.save()
 
-    const adonis = await User.filter!({ username: 'adon', email: 'test2' }, TestModelFilter).first()
+    const adonis = await User.filter({ username: 'adon', email: 'test2' }, TestModelFilter).first()
     assert.deepStrictEqual(adonis!.toJSON(), user2.toJSON())
 
-    const admin = await User.filter!({ isAdmin: 1 }, TestModelFilter).first()
+    const admin = await User.filter({ isAdmin: 1 }, TestModelFilter).first()
     assert.deepStrictEqual(admin!.toJSON(), user1.toJSON())
   })
 
   test('filter model through filtration scope', async (assert) => {
-    @filterable(TestModelFilter)
-    class Industry extends BaseModel {
+    class Industry extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+
       @column()
       public title: string
 
@@ -108,8 +119,10 @@ test.group('BaseModelFilter', (group) => {
   })
 
   test('filter relations through filtration scope', async (assert) => {
-    @filterable(TestModelFilter)
-    class User extends BaseModel {
+    class User extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+
       @column()
       public id: number
 
@@ -134,8 +147,10 @@ test.group('BaseModelFilter', (group) => {
     user.fill({ username: 'Lookin', email: 'lookin@test.ru', isAdmin: 1, companyId: 1 })
     await user.save()
 
-    @filterable(TestModelFilter)
-    class Industry extends BaseModel {
+    class Industry extends compose(BaseModel, Filterable) {
+      @filter(() => TestModelFilter)
+      public static filter: Filter<typeof TestModelFilter>
+
       @column()
       public id: number
 
