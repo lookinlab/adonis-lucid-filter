@@ -9,7 +9,7 @@
 
 import test from 'japa'
 import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
-import filterable from '../src/Decorator'
+import { filterable } from '../src/Decorators'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
