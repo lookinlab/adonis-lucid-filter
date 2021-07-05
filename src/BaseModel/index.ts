@@ -24,7 +24,7 @@ function StaticImplements<T> () {
  * @constructor
  */
 @StaticImplements<LucidFilterContract>()
-export default class BaseModelFilter implements LucidFilter {
+export class BaseModelFilter implements LucidFilter {
   public ['constructor']: typeof BaseModelFilter
 
   public static blacklist: string[] = []
@@ -99,3 +99,4 @@ export default class BaseModelFilter implements LucidFilter {
     return this.$blacklist.includes(method)
   }
 }
+export default BaseModelFilter
