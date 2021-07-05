@@ -7,35 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { FilterableDecorator, FilterDecorator, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-import { QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Orm'
-
-/**
- * Filterable decorator for model
- * @deprecated
- */
-export const filterable: FilterableDecorator = function (modelFilter: LucidFilterContract) {
-  return function (constructor) {
-    /**
-     * Scope filtration function
-     */
-    const scopeFn = (
-      query,
-      input,
-      Filter = modelFilter
-    ) => (new Filter(query, input)).handle()
-
-    /**
-     * Filter function
-     */
-    const filterFn = (input, Filter = modelFilter) => {
-      return scopeFn(constructor.query(), input, Filter)
-    }
-
-    constructor['filter'] = filterFn
-    constructor['filtration'] = scopeFn as QueryScope<QueryScopeCallback>
-  }
-}
+import { FilterDecorator } from '@ioc:Adonis/Addons/LucidFilter'
 
 /**
  * Filter decorator for LucidModel property

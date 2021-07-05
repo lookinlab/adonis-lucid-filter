@@ -7,5 +7,5 @@
  * file that was distributed with this source code.
  */
 
-/// <reference path="./model.ts" />
-/// <reference path="./lucid.ts" />
+/// <reference path="./filter.ts" />
+/// <reference path="./querybuilder.ts" />

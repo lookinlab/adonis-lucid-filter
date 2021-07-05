@@ -8,8 +8,14 @@
  */
 
 declare module '@ioc:Adonis/Addons/LucidFilter' {
-  import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
   import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
+  import {
+    LucidModel,
+    LucidRow,
+    ModelQueryBuilderContract,
+    QueryScope,
+    QueryScopeCallback,
+  } from '@ioc:Adonis/Lucid/Orm'
 
   /**
    * Lucid filter instance
@@ -44,21 +50,6 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   }
 
   /**
-   * Filterable decorator for model
-   * @deprecated -
-   */
-  interface FilterableDecorator {
-    (filter: LucidFilterContract): <T extends LucidModel & {
-      filter(input, modelFilter?: LucidFilterContract): any
-    }>(constructor: T) => void;
-  }
-  /**
-   * @deprecated
-   */
-  export const filterable: FilterableDecorator
-  export const BaseModelFilter: LucidFilterContract
-
-  /**
    * Filter method of filterable model
    */
   export type Filter<ModelFilter extends LucidFilterContract> = <
@@ -69,7 +60,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   >(
     this: Model,
     input: Partial<{
-      [Prop in keyof Instance as Exclude<Prop, keyof LucidFilter>]: (
+      [Prop in keyof Instance as Exclude<Prop, keyof LucidFilter | 'constructor'>]: (
         Parameters<Instance[Prop] extends (...args: any) => any ? Instance[Prop] : never>[number]
       )
     }>,
@@ -82,6 +73,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   export interface FilterableModel {
     $filter: () => LucidFilterContract
     filter: Filter<LucidFilterContract>
+    filtration: QueryScope<QueryScopeCallback>
   }
 
   /**
@@ -100,4 +92,5 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
 
   export const filter: FilterDecorator
   export const Filterable: FilterableMixin
+  export const BaseModelFilter: LucidFilterContract
 }

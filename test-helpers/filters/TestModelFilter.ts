@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import BaseModelFilter from '../../src/BaseModel'
+import { BaseModelFilter } from '../../src/BaseModel'
 
 export default class TestModelFilter extends BaseModelFilter {
   public static blacklist: string[] = ['company', 'password']
 
-  public username (username) {
+  public username (username: string) {
     this.$query.where('username', 'LIKE', `%${username}%`)
   }
 
-  public email (email) {
+  public email (email: string) {
     this.$query.where('email', 'LIKE', `%${email}%`)
   }
 

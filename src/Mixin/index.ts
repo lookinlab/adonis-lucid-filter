@@ -7,20 +7,27 @@
  * file that was distributed with this source code.
  */
 
-import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
-import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { FilterableMixin, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
+import { QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Orm'
 
-export const Filterable: FilterableMixin = <T extends NormalizeConstructor<LucidModel>> (superclass: T) => {
+export const Filterable: FilterableMixin = (superclass) => {
   class FilterableModel extends superclass {
     public static $filter: () => LucidFilterContract
     /**
      * Filter method of filterable model
      */
-    public static filter (input: object, dynamicFilter?: LucidFilterContract) {
-      const filter = dynamicFilter || this.$filter()
+    public static filter (input: object, Filter?: LucidFilterContract) {
+      const filter = Filter || this.$filter()
       return (new filter(this.query(), input)).handle()
     }
+
+    /**
+     * Filtration scope of filterable model
+     */
+    public static filtration = function (query, input, Filter?: LucidFilterContract) {
+      const filter = Filter || this.$filter()
+      return (new filter(query, input)).handle()
+    } as QueryScope<QueryScopeCallback>
   }
   return FilterableModel
 }
