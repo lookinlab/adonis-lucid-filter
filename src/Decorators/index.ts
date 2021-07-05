@@ -12,9 +12,9 @@ import { FilterDecorator } from '@ioc:Adonis/Addons/LucidFilter'
 /**
  * Filter decorator for LucidModel property
  */
-export const filter: FilterDecorator = (modelFilter) => {
+export const filter: FilterDecorator = (filter) => {
   return (target) => {
     target.boot()
-    target.$filter = modelFilter
+    target.$filter = filter
   }
 }

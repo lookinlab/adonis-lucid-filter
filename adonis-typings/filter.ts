@@ -86,7 +86,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   /**
    * Decorator of LucidModel property
    */
-  export type FilterDecorator = (modelFilter: () => LucidFilterContract) => <
+  export type FilterDecorator = (filter: () => LucidFilterContract) => <
     Model extends LucidModel & FilterableModel
   >(target: Model, property: string) => void
 
