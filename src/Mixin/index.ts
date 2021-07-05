@@ -25,7 +25,7 @@ export const Filterable: FilterableMixin = (superclass) => {
      * Filtration scope of filterable model
      */
     public static filtration = function (query, input, Filter?: LucidFilterContract) {
-      const filter = Filter || this.$filter()
+      const filter = Filter || (this.$filter as () => LucidFilterContract)()
       return (new filter(query, input)).handle()
     } as QueryScope<QueryScopeCallback>
   }
