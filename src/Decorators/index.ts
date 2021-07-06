@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import { FilterDecorator } from '@ioc:Adonis/Addons/LucidFilter'
+import { HasFilterDecorator } from '@ioc:Adonis/Addons/LucidFilter'
 
 /**
  * Filter decorator for LucidModel property
  */
-export const filter: FilterDecorator = ($filter) => {
+export const hasFilter: HasFilterDecorator = ($filter) => {
   return (target) => {
     target.boot()
     target.$filter = $filter
