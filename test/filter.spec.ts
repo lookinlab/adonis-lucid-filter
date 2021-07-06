@@ -9,7 +9,6 @@
 
 import test from 'japa'
 import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
-import { hasFilter } from '../src/Decorators'
 import { Filterable } from '../src/Mixin'
 import TestModelFilter from '../test-helpers/filters/TestModelFilter'
 import { ModelQueryBuilder } from '@adonisjs/lucid/build/src/Orm/QueryBuilder'
@@ -17,7 +16,6 @@ import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import { column, manyToMany } from '@adonisjs/lucid/build/src/Orm/Decorators'
 import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { ManyToMany } from '@ioc:Adonis/Lucid/Orm'
-import { HasFilter } from '@ioc:Adonis/Addons/LucidFilter'
 import { compose } from '@poppinss/utils/build/src/Helpers'
 
 test.group('BaseModelFilter', (group) => {
@@ -34,8 +32,7 @@ test.group('BaseModelFilter', (group) => {
 
   test('exists filter method when define ModelFilter to Filterable trait', (assert) => {
     class TestModel extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
     }
     TestModel.boot()
 
@@ -44,8 +41,7 @@ test.group('BaseModelFilter', (group) => {
 
   test('exists filter method when define ModelFilter to function filter', (assert) => {
     class TestModel extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
     }
     TestModel.boot()
 
@@ -54,8 +50,7 @@ test.group('BaseModelFilter', (group) => {
 
   test('filter model by input data', async (assert) => {
     class User extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
 
       @column()
       public username: string
@@ -88,8 +83,7 @@ test.group('BaseModelFilter', (group) => {
 
   test('filter model through filtration scope', async (assert) => {
     class Industry extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
 
       @column()
       public title: string
@@ -120,8 +114,7 @@ test.group('BaseModelFilter', (group) => {
 
   test('filter relations through filtration scope', async (assert) => {
     class User extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
 
       @column()
       public id: number
@@ -148,8 +141,7 @@ test.group('BaseModelFilter', (group) => {
     await user.save()
 
     class Industry extends compose(BaseModel, Filterable) {
-      @hasFilter(() => TestModelFilter)
-      public static filter: HasFilter<typeof TestModelFilter>
+      public static $filter = () => TestModelFilter
 
       @column()
       public id: number
