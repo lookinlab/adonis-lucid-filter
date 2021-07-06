@@ -20,9 +20,8 @@ export default class LucidFilterProvider {
     this.app.container.singleton('Adonis/Addons/LucidFilter', () => {
       const { BaseModelFilter } = require('../src/BaseModel')
       const { Filterable } = require('../src/Mixin')
-      const decorators = require('../src/Decorators')
 
-      return { BaseModelFilter, Filterable, ...decorators }
+      return { BaseModelFilter, Filterable }
     })
   }
 }
