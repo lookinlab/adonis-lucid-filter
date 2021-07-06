@@ -13,6 +13,7 @@ import { QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Orm'
 export const Filterable: FilterableMixin = (superclass) => {
   class FilterableModel extends superclass {
     public static $filter: () => LucidFilterContract
+
     /**
      * Filter method of filterable model
      */
