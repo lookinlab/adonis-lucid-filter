@@ -1,10 +1,5 @@
 # Adonis Lucid Filter
 
-<div style="text-align: center;">
-  <img src="./">
-</div>
----
-
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
 
