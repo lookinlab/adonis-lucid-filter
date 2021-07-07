@@ -61,12 +61,15 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
   }
 
   type KeysWithIds<SCKeys> = {
-    [Key in keyof SCKeys as
-      Key extends string ?
-        'id' extends Split<Key, '_'>[number] ? never :
-          SCKeys[Key] extends number ? `${string & Key}_id` : never
-      : never
-    ]?: SCKeys[Key]
+    [Key in keyof SCKeys as (
+      Key extends string
+        ? 'id' extends Split<Key, '_'>[number]
+          ? never
+          : SCKeys[Key] extends number
+            ? `${string & Key}_id`
+            : never
+        : never
+    )]?: SCKeys[Key]
   }
 
   type CamelCased<Keys> = {
