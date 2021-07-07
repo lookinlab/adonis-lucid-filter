@@ -24,4 +24,11 @@ export default class LucidFilterProvider {
       return { BaseModelFilter, Filterable }
     })
   }
+
+  public boot (): void {
+    this.app.container.withBindings(['Adonis/Lucid/Database'], ({ ModelQueryBuilder }) => {
+      const { extendModelQueryBuilder } = require('../src/Bindings/ModelQueryBuilder')
+      extendModelQueryBuilder(ModelQueryBuilder)
+    })
+  }
 }
