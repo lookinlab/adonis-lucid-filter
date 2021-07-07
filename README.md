@@ -223,7 +223,6 @@ export default class UserFilter extends BaseModelFilter {
 
 ```ts
 import UserFilter from 'App/Models/Filters/UserFilter'
-import { filterable } from '@ioc:Adonis/Addons/LucidFilter'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { Filterable  } from '@ioc:Adonis/Addons/LucidFilter'
 
@@ -273,9 +272,9 @@ export default class UserController {
 }
 ```
 
-### Filtering relations (version >= 2.1)
+### Filtering relations
 
-For filtering relations of model may be use scope `filtration`, example:
+For filtering relations of model may be use `.query().filter()` or scope `filtration`, example:
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
@@ -288,10 +287,14 @@ export default class UserPostsController {
    */
   public async index({ params, request }: HttpContextContract): Promise<Post[]> {
     const user: User = await User.findOrFail(params.user_id)
-
+    
     return user.related('posts').query()
       .apply(scopes => scopes.filtration(request.qs()))
       .exec()
+    
+    // or
+    
+    return user.related('posts').query().filter(request.qs()).exec()
   }
 }
 ```
