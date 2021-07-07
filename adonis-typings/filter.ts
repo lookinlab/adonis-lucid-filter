@@ -58,7 +58,7 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
         Instance[Prop] extends (...args: any) => any
           ? Instance[Prop]
           : never
-      >[number]
+      >[0]
     )
   }
 
