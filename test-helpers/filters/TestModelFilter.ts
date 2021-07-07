@@ -20,11 +20,15 @@ export default class TestModelFilter extends BaseModelFilter {
     this.$query.where('email', 'LIKE', `%${email}%`)
   }
 
-  public company (id) {
+  public company (id: number) {
     this.$query.where('company_id', +id)
   }
 
-  public isAdmin (flag) {
+  public companyId (id: number) {
+    this.$query.where('company_id', +id)
+  }
+
+  public isAdmin (flag: boolean) {
     this.$query.where('is_admin', flag)
   }
 
@@ -34,5 +38,9 @@ export default class TestModelFilter extends BaseModelFilter {
 
   public text (value: string): void {
     this.$query.where('text', 'LIKE', `%${value}%`)
+  }
+
+  public mobilePhone (value: string) {
+    console.log(value)
   }
 }

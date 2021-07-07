@@ -8,6 +8,7 @@
  */
 
 declare module '@ioc:Adonis/Addons/LucidFilter' {
+  import { CamelCase, SnakeCase, Split } from 'type-fest'
   import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
   import {
     LucidModel,
@@ -49,18 +50,37 @@ declare module '@ioc:Adonis/Addons/LucidFilter' {
     ): LucidFilter;
   }
 
-  /**
-   * Input object of filter model
-   */
-  export type InputObject<Instance extends InstanceType<LucidFilterContract>> = {
-    [Prop in keyof Instance as Exclude<Prop, keyof LucidFilter | 'constructor'>]?: (
+  type PickFilterKeys<Keys> = {
+    [Key in keyof Keys as SnakeCase<Exclude<Key, keyof LucidFilter | 'constructor'>>]: (
       Parameters<
-        Instance[Prop] extends (...args: any) => any
-          ? Instance[Prop]
+        Keys[Key] extends (...args: any) => any
+          ? Keys[Key]
           : never
       >[0]
     )
   }
+
+  type KeysWithIds<SCKeys> = {
+    [Key in keyof SCKeys as
+      Key extends string ?
+        'id' extends Split<Key, '_'>[number] ? never :
+          SCKeys[Key] extends number ? `${string & Key}_id` : never
+      : never
+    ]?: SCKeys[Key]
+  }
+
+  type CamelCased<Keys> = {
+    [Key in keyof Keys as CamelCase<`${string & Key}`>]?: Keys[Key]
+  }
+
+  /**
+   * Input object of filter model
+   */
+  export type InputObject<Instance extends InstanceType<LucidFilterContract>> =
+    Partial<PickFilterKeys<Instance>> &
+    KeysWithIds<PickFilterKeys<Instance>> &
+    CamelCased<PickFilterKeys<Instance>> &
+    CamelCased<KeysWithIds<PickFilterKeys<Instance>>>
 
   /**
    * Filterable model

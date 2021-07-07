@@ -77,7 +77,7 @@ test.group('BaseModelFilter', (group) => {
     const adonis = await User.filter({ username: 'adon', email: 'test2' }, TestModelFilter).first()
     assert.deepStrictEqual(adonis!.toJSON(), user2.toJSON())
 
-    const admin = await User.filter({ isAdmin: 1 }, TestModelFilter).first()
+    const admin = await User.filter({ isAdmin: true }, TestModelFilter).first()
     assert.deepStrictEqual(admin!.toJSON(), user1.toJSON())
   })
 
