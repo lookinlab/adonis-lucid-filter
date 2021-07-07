@@ -70,8 +70,6 @@ export default class UserController {
 
   public async index({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.qs()).exec()
-    // or
-    return User.query().filter(require.qs()).exec()
   }
 }
 ```
