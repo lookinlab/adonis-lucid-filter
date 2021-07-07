@@ -1,19 +1,25 @@
 # Adonis Lucid Filter
 
-Version [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tree/v1)
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/lookinlab/adonis-lucid-filter.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/lookinlab/adonis-lucid-filter.svg?branch=develop)](https://travis-ci.org/lookinlab/adonis-lucid-filter)
-[![Coverage Status](https://coveralls.io/repos/github/lookinlab/adonis-lucid-filter/badge.svg?branch=develop)](https://coveralls.io/github/lookinlab/adonis-lucid-filter?branch=develop)
+<div style="text-align: center;">
+  <img src="./">
+</div>
+---
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
 
 ## Versions
+
 > **Note**: Check before install :point_down:
 
-- adonis-lucid-filter@latest (^3.\*.\*) => @adonisjs/lucid@^15.\*.*
-- adonis-lucid-filter@2.\*.\* => @adonisjs/lucid@14.\*.*
+| adonis-lucid-filter                 | adonis-lucid |
+|-------------------------------------|--------------|
+| ^4.\*.* (latest)                    | ^15.\*.*     |
+| ^3.\*.* (`@filterable()` decorator) | ^15.\*.*     |
+| ^2.\*.*                             | 14.\*.*      |
+
+- Docs [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tree/v1)
+- Docs [for `@filterable()` decorator](https://github.com/lookinlab/adonis-lucid-filter/tree/v3)
 
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
@@ -53,7 +59,6 @@ export default class UserController {
           .orWhere('last_name', 'LIKE', `%${name}%`)
       })
     }
-
     return query.exec()
   }
 
@@ -70,6 +75,8 @@ export default class UserController {
 
   public async index({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.qs()).exec()
+    // or
+    return User.query().filter(require.qs()).exec()
   }
 }
 ```
@@ -81,11 +88,11 @@ Make sure to install it using `npm` or `yarn`.
 ```bash
 # npm
 npm i adonis-lucid-filter
-node ace invoke adonis-lucid-filter
+node ace configure adonis-lucid-filter
 
 # yarn
 yarn add adonis-lucid-filter
-node ace invoke adonis-lucid-filter
+node ace configure adonis-lucid-filter
 ```
 
 ## Usage
@@ -182,7 +189,8 @@ export default class UserFilter extends BaseModelFilter {
 
 #### Blacklist
 
-Any methods defined in the `blacklist` array will not be called by the filter. Those methods are normally used for internal filter logic.
+Any methods defined in the `blacklist` array will not be called by the filter.
+Those methods are normally used for internal filter logic.
 
 The `whitelistMethod()` methods can be used to dynamically blacklist methods.
 
@@ -197,7 +205,8 @@ setup($query) {
 
 > **Note:** All methods inside `setup()` will be called every time `filter()` is called on the model
 
-In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input object. In order to call this method it would need to be whitelisted dynamically:
+In the example above `secretMethod()` will not be called, even if there is a `secret_method` key in the input object.
+In order to call this method it would need to be whitelisted dynamically:
 
 #### Static properties
 
@@ -211,7 +220,8 @@ export default class UserFilter extends BaseModelFilter {
   public static dropId: boolean = true
   
   // Doing this would allow you to have a mobile_phone() filter method instead of mobilePhone().
-  // By default, mobilePhone() filter method can be called thanks to one of the following input key: mobile_phone, mobilePhone, mobile_phone_id
+  // By default, mobilePhone() filter method can be called thanks to one of the following input key:
+  // mobile_phone, mobilePhone, mobile_phone_id
   public static camelCase: boolean = true
 }
 ```
@@ -221,9 +231,12 @@ export default class UserFilter extends BaseModelFilter {
 ```ts
 import UserFilter from 'App/Models/Filters/UserFilter'
 import { filterable } from '@ioc:Adonis/Addons/LucidFilter'
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { Filterable  } from '@ioc:Adonis/Addons/LucidFilter'
 
-@filterable(UserFilter)
-export default class User extends BaseModel {
+export default class User extends compose(BaseModel, Filterable) {
+  public static $filter = () => UserFilter
+
   // ...columns and props
 }
 ```
@@ -235,7 +248,6 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
 export default class UserController {
-
   public async index({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.qs()).exec()
   }
@@ -244,7 +256,6 @@ export default class UserController {
 
   public async index({ request }: HttpContextContract): Promise<SimplePaginatorContract<User>> {
     const { page = 1, ...input } = request.qs()
-    
     return User.filter(input).paginate(page, 15)
   }
 }
@@ -261,7 +272,6 @@ import AdminFilter from 'App/Models/Filters/AdminFilter'
 import UserFilter from 'App/Models/Filters/UserFilter'
 
 export default class UserController {
-
   public async index({ request, auth }: HttpContextContract): Promise<User[]> {
     const Filter = auth.user.isAdmin() ? AdminFilter : UserFilter
 
@@ -293,9 +303,6 @@ export default class UserPostsController {
 }
 ```
 
-Documentation [Query Scopes](https://preview.adonisjs.com/guides/models/query-scopes)
+Documentation by [Query Scopes](https://preview.adonisjs.com/guides/models/query-scopes)
 
-**Note:** At relation model must have defined Filter through decorator `@filterable()`
-
-## Thanks for the stars! :star:
-
+**Note:** The relation model must be Filterable and `$filter` must be defined in it
