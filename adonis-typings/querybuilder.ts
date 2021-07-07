@@ -8,11 +8,16 @@
  */
 
 declare module '@ioc:Adonis/Lucid/Orm' {
-  import { FilterableModel, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-  import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
+  import { LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
+  import { LucidModel, QueryScope, QueryScopeCallback } from '@ioc:Adonis/Lucid/Orm'
   import { InputObject } from '@ioc:Adonis/Addons/LucidFilter'
 
-  type ExcludeTypeMethods<Type, Model> = {
+  type FilterableModel = LucidModel & {
+    $filter: () => LucidFilterContract
+    filtration: QueryScope<QueryScopeCallback>
+  }
+
+  type ExcludeMethods<Type, Model> = {
     [Method in keyof Type as (
       Model extends FilterableModel ? Method : never
     )]: Type[Method]
@@ -26,5 +31,5 @@ declare module '@ioc:Adonis/Lucid/Orm' {
   }
 
   interface ModelQueryBuilderContract<Model extends LucidModel, Result = InstanceType<Model>>
-    extends ExcludeTypeMethods<FilterableModelMethods<Model>, Model> {}
+    extends ExcludeMethods<FilterableModelMethods<Model>, Model> {}
 }
