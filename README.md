@@ -1,5 +1,7 @@
 # Adonis Lucid Filter
 
+[![npm-image]][npm-url] [![license-image]][license-url] ![typescript-image]
+
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
 
@@ -302,3 +304,12 @@ export default class UserPostsController {
 Documentation by [Query Scopes](https://preview.adonisjs.com/guides/models/query-scopes)
 
 **Note:** The relation model must be Filterable and `$filter` must be defined in it
+
+[npm-image]: https://img.shields.io/npm/v/adonis-lucid-filter?logo=npm&style=for-the-badge
+[npm-url]: https://www.npmjs.com/package/adonis-lucid-filter
+
+[license-image]: https://img.shields.io/npm/l/adonis-lucid-filter?style=for-the-badge&color=blueviolet
+[license-url]: https://github.com/lookinlab/adonis-lucid-filter/blob/develop/LICENSE.md
+
+[typescript-image]: https://img.shields.io/npm/types/adonis-lucid-filter?color=294E80&label=%20&logo=typescript&style=for-the-badge
+[typescript-url]: https://github.com/lookinlab
