@@ -1,6 +1,6 @@
 # Adonis Lucid Filter
 
-[![npm-image]][npm-url] [![license-image]][license-url] ![typescript-image]
+[![npm-image]][npm-url] [![license-image]][license-url] [![typescript-image]][typescript-url]
 
 This addon adds the functionality to filter Lucid Models
 > Inspired by [EloquentFilter](https://github.com/Tucker-Eric/EloquentFilter)
