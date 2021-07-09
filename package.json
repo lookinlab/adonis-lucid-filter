@@ -36,6 +36,9 @@
   "bugs": {
     "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
+  "dependencies": {
+    "type-fest": "^1.2.2"
+  },
   "devDependencies": {
     "@adonisjs/ace": "^11.0.1",
     "@adonisjs/application": "^5.1.2",
@@ -57,7 +60,6 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "ts-node": "^10.0.0",
-    "type-fest": "^1.2.1",
     "typescript": "^4.2.4"
   },
   "directories": {
