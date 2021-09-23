@@ -9,11 +9,11 @@ This addon adds the functionality to filter Lucid Models
 
 > **Note**: Check before install :point_down:
 
-| adonis-lucid-filter                 | adonis-lucid |
-|-------------------------------------|--------------|
-| ^4.\*.* (latest)                    | ^15.\*.*     |
-| ^3.\*.* (`@filterable()` decorator) | ^15.\*.*     |
-| ^2.\*.*                             | 14.\*.*      |
+| adonis-lucid-filter                 | adonis-lucid        |
+|-------------------------------------|---------------------|
+| ^4.\*.* (latest)                    | ^15.\*.* and latest |
+| ^3.\*.* (`@filterable()` decorator) | ^15.\*.*            |
+| ^2.\*.*                             | 14.\*.*             |
 
 - Docs [for **Adonis v4**](https://github.com/lookinlab/adonis-lucid-filter/tree/v1)
 - Docs [for `@filterable()` decorator](https://github.com/lookinlab/adonis-lucid-filter/tree/v3)
@@ -21,15 +21,15 @@ This addon adds the functionality to filter Lucid Models
 ## Introduction
 Example, we want to return a list of users filtered by multiple parameters. When we navigate to:
 
-`/users?name=Tony&last_name=&company_id=2&industry=5`
+`/users?name=Tony&lastName=&companyId=2&industry=5`
 
 `request.all()` or `request.qs()` will return:
 
 ```json
 {
   "name": "Tony",
-  "last_name": "",
-  "company_id": 2,
+  "lastName": "",
+  "companyId": 2,
   "industry": 5
 }
 ```
@@ -41,14 +41,13 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
 export default class UserController {
-
   public async index({ request }: HttpContextContract): Promise<User[]> {
-    const { company_id, last_name, name, industry } = request.qs()
+    const { companyId, lastName, name, industry } = request.qs()
   
-    const query = User.query().where('company_id', +company_id)
+    const query = User.query().where('company_id', +companyId)
 
-    if (last_name) {
-      query.where('last_name', 'LIKE', `%${last_name}%`)
+    if (lastName) {
+      query.where('last_name', 'LIKE', `%${lastName}%`)
     }
     if (name) {
       query.where(function () {
@@ -69,7 +68,6 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
 export default class UserController {
-
   public async index({ request }: HttpContextContract): Promise<User[]> {
     return User.filter(request.qs()).exec()
   }
@@ -141,9 +139,9 @@ To define methods for the following input:
 
 ```json
 {
-  "company_id": 5,
+  "companyId": 5,
   "name": "Tony",
-  "mobile_phone": "888555"
+  "mobilePhone": "888555"
 }
 ```
 
@@ -159,7 +157,7 @@ export default class UserFilter extends BaseModelFilter {
   
   public static blacklist: string[] = ['secretMethod']
 
-  // This will filter 'company_id' OR 'company'
+  // This will filter 'companyId', 'company_id' OR 'company'
   company(id: number) {
     this.$query.where('company_id', id)
   }
@@ -216,7 +214,7 @@ export default class UserFilter extends BaseModelFilter {
   
   // Doing this would allow you to have a mobile_phone() filter method instead of mobilePhone().
   // By default, mobilePhone() filter method can be called thanks to one of the following input key:
-  // mobile_phone, mobilePhone, mobile_phone_id
+  // mobile_phone, mobilePhone, mobile_phone_id, mobilePhoneId
   public static camelCase: boolean = true
 }
 ```
