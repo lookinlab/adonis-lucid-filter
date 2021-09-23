@@ -50,6 +50,8 @@ test.group('ModelFilter', (group) => {
     const filter = new TestModelFilter(User.query(), {
       username: 'Tony',
       email: '',
+      company: 2,
+      companyId: 2,
       company_id: 2,
       roles: [1, 4, 7],
       industry: 5,
@@ -58,6 +60,8 @@ test.group('ModelFilter', (group) => {
 
     const standard = {
       username: 'username',
+      company: 'company',
+      companyId: 'company',
       company_id: 'company',
       first_name: 'firstName',
     }
@@ -77,6 +81,7 @@ test.group('ModelFilter', (group) => {
 
     const userFilter = new UserFilter(User.query(), {})
     assert.strictEqual(userFilter.$getFilterMethod('company_id'), 'companyId')
+    assert.strictEqual(userFilter.$getFilterMethod('companyId'), 'companyId')
   })
 
   test('whitelist method and method is callable', (assert) => {
@@ -93,13 +98,13 @@ test.group('ModelFilter', (group) => {
     })
     userFilter.handle()
 
-    assert.strictEqual(userFilter.$methodIsCallable('company'), false)
-    assert.strictEqual(userFilter.$methodIsBlacklisted('company'), true)
+    assert.strictEqual(userFilter.$methodIsCallable('email'), false)
+    assert.strictEqual(userFilter.$methodIsBlacklisted('email'), true)
 
-    const result = userFilter.whitelistMethod('company')
+    const result = userFilter.whitelistMethod('email')
     assert.strictEqual(result, true)
-    assert.notInclude(userFilter.$blacklist, 'company')
-    assert.strictEqual(userFilter.$methodIsCallable('company'), true)
+    assert.notInclude(userFilter.$blacklist, 'email')
+    assert.strictEqual(userFilter.$methodIsCallable('email'), true)
 
     const result2 = userFilter.whitelistMethod('missing_key')
     assert.strictEqual(result2, false)

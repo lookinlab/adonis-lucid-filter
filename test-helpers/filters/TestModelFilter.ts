@@ -10,7 +10,7 @@
 import { BaseModelFilter } from '../../src/BaseModel'
 
 export default class TestModelFilter extends BaseModelFilter {
-  public static blacklist: string[] = ['company', 'password']
+  public static blacklist: string[] = ['email', 'password']
 
   public username (username: string) {
     this.$query.where('username', 'LIKE', `%${username}%`)

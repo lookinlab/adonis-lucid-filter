@@ -30,7 +30,7 @@ test.group('BaseModelFilter', (group) => {
 
   group.after(() => cleanup())
 
-  test('exists filter method when define ModelFilter to Filterable trait', (assert) => {
+  test('exists filter method when define ModelFilter to Filterable mixin', (assert) => {
     class TestModel extends compose(BaseModel, Filterable) {
       public static $filter = () => TestModelFilter
     }
@@ -79,6 +79,11 @@ test.group('BaseModelFilter', (group) => {
 
     const admin = await User.filter({ isAdmin: true }, TestModelFilter).first()
     assert.deepStrictEqual(admin!.toJSON(), user1.toJSON())
+
+    const companyUsers = await User.filter({ companyId: 2 }, TestModelFilter).exec()
+    const companyUsersWithoutId = await User.filter({ company: 2 }, TestModelFilter).exec()
+    assert.lengthOf(companyUsers, 1)
+    assert.lengthOf(companyUsersWithoutId, companyUsers.length)
   })
 
   test('filter model through filtration scope', async (assert) => {

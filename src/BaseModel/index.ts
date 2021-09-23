@@ -72,7 +72,7 @@ export class BaseModelFilter implements LucidFilter {
   }
 
   public $getFilterMethod (key: string): string {
-    const methodName = this.constructor.dropId ? key.replace(/^(.*)_id$/, '$1') : key
+    const methodName = this.constructor.dropId ? key.replace(/^(.*)(_id|Id)$/, '$1') : key
     return this.constructor.camelCase ? camelCase(methodName) : methodName
   }
 
