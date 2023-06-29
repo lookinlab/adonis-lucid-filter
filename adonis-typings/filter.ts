@@ -8,9 +8,9 @@
  */
 
 declare module '@ioc:Adonis/Addons/LucidFilter' {
-  import { CamelCase, SnakeCase, Split } from 'type-fest'
-  import { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
-  import {
+  import type { CamelCase, SnakeCase, Split } from 'type-fest'
+  import type { NormalizeConstructor } from '@ioc:Adonis/Core/Helpers'
+  import type {
     LucidModel,
     LucidRow,
     ModelQueryBuilderContract,
