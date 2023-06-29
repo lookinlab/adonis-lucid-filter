@@ -17,6 +17,7 @@ import { column, manyToMany } from '@adonisjs/lucid/build/src/Orm/Decorators'
 import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
 import { ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@poppinss/utils/build/src/Helpers'
+import { extendModelQueryBuilder } from '../src/Bindings/ModelQueryBuilder'
 
 test.group('BaseModelFilter', (group) => {
   let app: ApplicationContract
@@ -25,6 +26,8 @@ test.group('BaseModelFilter', (group) => {
   group.before(async () => {
     app = await setupApplication()
     BaseModel = getBaseModel(app)
+    extendModelQueryBuilder(ModelQueryBuilder)
+
     await setup()
   })
 
@@ -37,6 +40,13 @@ test.group('BaseModelFilter', (group) => {
     TestModel.boot()
 
     assert.instanceOf(TestModel.filter({}), ModelQueryBuilder)
+  })
+
+  test('filter method no exists when not define ModelFilter and Filterable mixin', (assert) => {
+    class TestModel extends BaseModel {}
+    TestModel.boot()
+
+    assert.throw(TestModel.query().filter)
   })
 
   test('exists filter method when define ModelFilter to function filter', (assert) => {
@@ -182,5 +192,72 @@ test.group('BaseModelFilter', (group) => {
       .exec()
 
     assert.lengthOf(lookinIndustries, 2)
+  })
+
+  test('filter relations through filter of query', async (assert) => {
+    class User extends compose(BaseModel, Filterable) {
+      public static $filter = () => TestModelFilter
+
+      @column()
+      public id: number
+
+      @column()
+      public username: string
+
+      @column()
+      public email: string
+
+      @column()
+      public isAdmin: number
+
+      @column()
+      public companyId: number
+
+      @manyToMany(() => Industry)
+      public industries: ManyToMany<typeof Industry>
+    }
+    User.boot()
+
+    const user = new User()
+    user.fill({ username: 'Lookin1', email: 'lookin1@test.ru', isAdmin: 1, companyId: 1 })
+    await user.save()
+
+    class Industry extends compose(BaseModel, Filterable) {
+      public static $filter = () => TestModelFilter
+
+      @column()
+      public id: number
+
+      @column()
+      public title: string
+
+      @column()
+      public text: string
+
+      @column()
+      public authorId: number
+    }
+    Industry.boot()
+
+    await user.related('industries').createMany([
+      {
+        title: 'Industry 1',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 2',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 3',
+        text: 'Industry by Adonis',
+      },
+    ])
+
+    const lookinIndustries = await user.related('industries').query()
+      .filter({ text: 'Adonis' })
+      .exec()
+
+    assert.lengthOf(lookinIndustries, 1)
   })
 })
