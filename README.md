@@ -299,7 +299,7 @@ export default class UserPostsController {
 }
 ```
 
-Documentation by [Query Scopes](https://preview.adonisjs.com/guides/models/query-scopes)
+Documentation by [Query Scopes](https://docs.adonisjs.com/guides/models/query-scopes)
 
 **Note:** The relation model must be Filterable and `$filter` must be defined in it
 
