@@ -1,4 +1,5 @@
 # Adonis Lucid Filter
+> WIP for AdonisJS v6
 
 [![npm-image]][npm-url] [![license-image]][license-url] [![typescript-image]][typescript-url]
 
@@ -9,9 +10,9 @@ This addon adds the functionality to filter Lucid Models
 
 > **Note**: Check before install :point_down:
 
-| adonis-lucid-filter                 | adonis-lucid        |
+| adonis-lucid-filter                 | @adonisjs/lucid     |
 |-------------------------------------|---------------------|
-| ^4.\*.* (latest)                    | ^15.\*.* and latest |
+| ^4.\*.*                             | <=18.\*.*           |
 | ^3.\*.* (`@filterable()` decorator) | ^15.\*.*            |
 | ^2.\*.*                             | 14.\*.*             |
 
