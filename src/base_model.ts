@@ -1,17 +1,15 @@
 /*
  * adonis-lucid-filter
  *
- * (c) Lookin Anton <lookin@lookinlab.ru>
+ * (c) Lookin Anton <alf@lookinlab.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-/// <reference path="../../adonis-typings/index.ts" />
-
-import camelCase from 'lodash/camelCase'
-import { LucidFilter, LucidFilterContract } from '@ioc:Adonis/Addons/LucidFilter'
-import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
+import camelCase from 'lodash/camelCase.js'
+import { LucidFilter, LucidFilterContract } from './types/filter.js'
+import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 function StaticImplements<T> () {
   return (_t: T) => {}
