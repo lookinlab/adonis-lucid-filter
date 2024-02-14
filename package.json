@@ -105,6 +105,12 @@
     "access": "public",
     "tag": "latest"
   },
+  "np": {
+    "message": "chore(release): %s",
+    "tag": "latest",
+    "branch": "master",
+    "anyBranch": false
+  },
   "c8": {
     "reporter": [
       "text",
@@ -128,11 +134,5 @@
     "dts": false,
     "sourcemap": true,
     "target": "esnext"
-  },
-  "np": {
-    "message": "chore(release): %s",
-    "tag": "latest",
-    "branch": "master",
-    "anyBranch": false
   }
 }
