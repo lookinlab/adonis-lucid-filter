@@ -1,0 +1,20 @@
+{{#var entity = generators.createEntity(name)}}
+{{#var modelName = generators.modelName(entity.name)}}
+{{#var modelFileName = string(modelName).removeExtension().snakeCase().toString()}}
+{{#var modelFilterName = string(modelName).removeSuffix('filter').pascalCase().suffix(string.pascalCase('filter')).toString()}}
+{{#var modelFilterFileName = string(modelName).snakeCase().suffix('_filter').ext('.ts').toString()}}
+{{{
+  exports({ to: app.modelsPath('filters', entity.path, modelFilterFileName) })
+}}}
+
+import { BaseModelFilter } from 'adonis-lucid-filter'
+import type { ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import {{ modelName }} from '#models/{{ modelFileName }}'
+
+export default class {{ modelFilterName }} extends BaseModelFilter {
+  declare $query: ModelQueryBuilderContract<typeof {{ modelName }}>
+
+  name(value: string): void {
+    this.$query.where('name', value)
+  }
+}
