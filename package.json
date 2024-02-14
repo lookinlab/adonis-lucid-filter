@@ -9,7 +9,6 @@
   "type": "module",
   "files": [
     "build/commands",
-    "build/providers",
     "build/src",
     "build/stubs",
     "build/configure.d.ts",
@@ -20,8 +19,7 @@
   "exports": {
     ".": "./build/index.js",
     "./commands": "./build/commands/main.js",
-    "./types/*": "./build/src/types/*.js",
-    "./lucid_filter_provider": "./build/providers/lucid_filter_provider.js"
+    "./types/*": "./build/src/types/*.js"
   },
   "scripts": {
     "lint": "eslint .",
@@ -121,8 +119,7 @@
       "./index.ts",
       "./src/types/*.ts",
       "./src/bindings/model_query_builder.ts",
-      "./commands/make_filter.ts",
-      "./providers/lucid_filter_provider.ts"
+      "./commands/make_filter.ts"
     ],
     "outDir": "./build",
     "clean": true,

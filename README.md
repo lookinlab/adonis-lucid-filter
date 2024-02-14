@@ -103,23 +103,7 @@ Make sure to register the provider inside `adonisrc.ts` file.
 commands: [
   // ...
   () => import('adonis-lucid-filter/commands')
-],
-providers: [
-  // ...
-  () => import('adonis-lucid-filter/lucid_filter_provider')
 ]
-```
-
-For TypeScript projects add to `tsconfig.json` file:
-```json
-{
-  "compilerOptions": {
-    "types": [
-      "...other packages",
-      "adonis-lucid-filter"
-    ]
-  } 
-}
 ```
 
 ### Generating The Filter

@@ -7,7 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import type { ModelQueryBuilder } from '@adonisjs/lucid/orm'
+/// <reference path="../types/querybuilder.ts" />
+
+import { ModelQueryBuilder } from '@adonisjs/lucid/orm'
 import type { LucidFilterContract } from 'adonis-lucid-filter/types/filter'
 
 /**
