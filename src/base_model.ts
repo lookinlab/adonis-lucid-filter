@@ -23,13 +23,13 @@ function StaticImplements<T>() {
 @StaticImplements<LucidFilterContract>()
 export class BaseModelFilter implements LucidFilter {
   declare ['constructor']: typeof BaseModelFilter
+  declare $blacklist: string[]
 
   static blacklist: string[] = []
   static dropId: boolean = true
   static camelCase: boolean = true
 
-  declare setup?: ($query: any) => void
-  declare $blacklist: string[]
+  setup?($query: any): void
 
   constructor(
     public $query: any,

@@ -7,23 +7,34 @@
  * file that was distributed with this source code.
  */
 
-import type { LucidFilterContract, FilterableModel } from 'adonis-lucid-filter/types/filter'
-import type { QueryScope, QueryScopeCallback } from '@adonisjs/lucid/types/model'
 import type { NormalizeConstructor } from '@adonisjs/core/types/helpers'
 import type { BaseModel } from '@adonisjs/lucid/orm'
+import type { InputObject, LucidFilterContract } from 'adonis-lucid-filter/types/filter'
+import type {
+  ModelQueryBuilderContract,
+  QueryScope,
+  QueryScopeCallback,
+} from '@adonisjs/lucid/types/model'
 
-export const Filterable = <T extends NormalizeConstructor<typeof BaseModel>>(
-  superclass: T
-): T & FilterableModel => {
+export const Filterable = <Model extends NormalizeConstructor<typeof BaseModel>>(
+  superclass: Model
+) => {
   class FilterableModel extends superclass {
     declare static $filter: () => LucidFilterContract
 
     /**
      * Filter method of filterable model
      */
-    static filter(input: object, Filter?: LucidFilterContract) {
-      const filter = Filter || this.$filter()
-      return new filter(this.query(), input).handle()
+    static filter<
+      T extends typeof FilterableModel,
+      Filter extends LucidFilterContract = ReturnType<T['$filter']>,
+    >(
+      this: T,
+      input: InputObject<InstanceType<Filter>>,
+      filter?: Filter
+    ): ModelQueryBuilderContract<T> {
+      const Filter = filter || this.$filter()
+      return new Filter(this.query(), input).handle()
     }
 
     /**
@@ -33,11 +44,11 @@ export const Filterable = <T extends NormalizeConstructor<typeof BaseModel>>(
       this: typeof FilterableModel,
       query,
       input,
-      Filter?: LucidFilterContract
+      filter?: LucidFilterContract
     ) {
-      const filter = Filter || this.$filter()
-      return new filter(query, input).handle()
-    } as QueryScope<T, QueryScopeCallback>
+      const Filter = filter || this.$filter()
+      return new Filter(query, input).handle()
+    } as QueryScope<Model, QueryScopeCallback>
   }
   return FilterableModel
 }

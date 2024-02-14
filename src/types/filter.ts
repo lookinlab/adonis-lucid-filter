@@ -8,22 +8,12 @@
  */
 
 import type { CamelCase, SnakeCase, Split } from 'type-fest'
-import type {
-  LucidModel,
-  LucidRow,
-  ModelQueryBuilderContract,
-  QueryScope,
-  QueryScopeCallback,
-} from '@adonisjs/lucid/types/model'
+import type { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
 
 /**
  * Lucid filter instance
  */
 export interface LucidFilter {
-  $input: object
-  $query: ModelQueryBuilderContract<LucidModel, LucidRow>
-  $blacklist: string[]
-
   setup?($query: any): void
   whitelistMethod(method: string): boolean
   handle(): any
@@ -83,19 +73,3 @@ export type InputObject<Instance extends InstanceType<LucidFilterContract>> = Pa
   KeysWithIds<PickKeys<Instance>> &
   CamelCased<PickKeys<Instance>> &
   CamelCased<KeysWithIds<PickKeys<Instance>>>
-
-/**
- * Filterable model
- */
-export interface FilterableModel {
-  $filter: () => LucidFilterContract
-  filtration: QueryScope<LucidModel, QueryScopeCallback>
-  filter<
-    Model extends LucidModel & FilterableModel,
-    Filter extends LucidFilterContract = ReturnType<Model['$filter']>,
-  >(
-    this: Model,
-    input: InputObject<InstanceType<Filter>>,
-    filter?: Filter
-  ): ModelQueryBuilderContract<Model, InstanceType<Model>>
-}

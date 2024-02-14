@@ -8,19 +8,18 @@
  */
 
 import { test } from '@japa/runner'
-import { createDatabase, createTables } from '../helpers.js'
-import { Filterable } from '../../src/mixin.js'
-import TestModelFilter from '../filters/test_model_filter.js'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, ModelQueryBuilder, column, manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 
-// import { extendModelQueryBuilder } from '../src/Bindings/ModelQueryBuilder'
+import { extendModelQueryBuilder } from '../../src/bindings/model_query_builder.js'
+import { createDatabase, createTables } from '../helpers.js'
+import { Filterable } from '../../src/mixin.js'
+import TestModelFilter from '../filters/test_model_filter.js'
+import TestSetupFilter from '../filters/test_setup_filter.js'
 
 test.group('BaseModelFilter', (group) => {
-  group.setup(async () => {
-    // extendModelQueryBuilder(ModelQueryBuilder)
-  })
+  group.setup(() => extendModelQueryBuilder(ModelQueryBuilder))
 
   test('exists filter method when define ModelFilter to Filterable mixin', async ({ assert }) => {
     const db = await createDatabase()
@@ -32,24 +31,22 @@ test.group('BaseModelFilter', (group) => {
     TestModel.boot()
 
     assert.instanceOf(TestModel.filter({}), ModelQueryBuilder)
+    assert.instanceOf(TestModel.query().filter({}), ModelQueryBuilder)
   })
-
-  // test('filter method no exists when not define ModelFilter and Filterable mixin', ({ assert }) => {
-  //   class TestModel extends BaseModel {}
-  //   TestModel.boot()
-
-  //   assert.throw(TestModel.query().filter)
-  // })
 
   test('exists filter method when define ModelFilter to function filter', async ({ assert }) => {
     const db = await createDatabase()
     await createTables(db)
 
     class TestModel extends compose(BaseModel, Filterable) {
-      static $filter = () => TestModelFilter
+      static $filter = () => TestSetupFilter
     }
     TestModel.boot()
 
+    assert.equal(
+      TestModel.filter({ email: 'test' }).toQuery(),
+      'select * from `test_models` where `is_active` = true'
+    )
     assert.instanceOf(TestModel.filter({}, TestModelFilter), ModelQueryBuilder)
   })
 
@@ -200,70 +197,85 @@ test.group('BaseModelFilter', (group) => {
     assert.lengthOf(lookinIndustries, 2)
   })
 
-  // test('filter relations through filter of query', async ({ assert }) => {
-  //   class User extends compose(BaseModel, Filterable) {
-  //     static $filter = () => TestModelFilter
+  test('filter of query exists into not Filterable model', async ({ assert }) => {
+    const db = await createDatabase()
+    await createTables(db)
 
-  //     @column()
-  //     declare id: number
+    class TestModel extends BaseModel {}
+    TestModel.boot()
 
-  //     @column()
-  //     declare username: string
+    assert.isFunction(TestModel.query().filter)
+  })
 
-  //     @column()
-  //     declare email: string
+  test('filter relations through filter of query', async ({ assert }) => {
+    const db = await createDatabase()
+    await createTables(db)
 
-  //     @column()
-  //     declare isAdmin: number
+    class User extends compose(BaseModel, Filterable) {
+      static $filter = () => TestModelFilter
 
-  //     @column()
-  //     declare companyId: number
+      @column()
+      declare id: number
 
-  //     @manyToMany(() => Industry)
-  //     declare industries: ManyToMany<typeof Industry>
-  //   }
-  //   User.boot()
+      @column()
+      declare username: string
 
-  //   const user = new User()
-  //   user.fill({ username: 'Lookin1', email: 'lookin1@test.ru', isAdmin: 1, companyId: 1 })
-  //   await user.save()
+      @column()
+      declare email: string
 
-  //   class Industry extends compose(BaseModel, Filterable) {
-  //     static $filter = () => TestModelFilter
+      @column()
+      declare isAdmin: number
 
-  //     @column()
-  //     declare id: number
+      @column()
+      declare companyId: number
 
-  //     @column()
-  //     declare title: string
+      @manyToMany(() => Industry)
+      declare industries: ManyToMany<typeof Industry>
+    }
+    User.boot()
 
-  //     @column()
-  //     declare text: string
+    const user = new User()
+    user.fill({ username: 'Lookin1', email: 'lookin1@test.ru', isAdmin: 1, companyId: 1 })
+    await user.save()
 
-  //     @column()
-  //     declare authorId: number
-  //   }
-  //   Industry.boot()
+    class Industry extends compose(BaseModel, Filterable) {
+      static $filter = () => TestModelFilter
 
-  //   await user.related('industries').createMany([
-  //     {
-  //       title: 'Industry 1',
-  //       text: 'Industry by Lookin',
-  //     },
-  //     {
-  //       title: 'Industry 2',
-  //       text: 'Industry by Lookin',
-  //     },
-  //     {
-  //       title: 'Industry 3',
-  //       text: 'Industry by Adonis',
-  //     },
-  //   ])
+      @column()
+      declare id: number
 
-  //   const lookinIndustries = await user.related('industries').query()
-  //     .filter({ text: 'Adonis' })
-  //     .exec()
+      @column()
+      declare title: string
 
-  //   assert.lengthOf(lookinIndustries, 1)
-  // })
+      @column()
+      declare text: string
+
+      @column()
+      declare authorId: number
+    }
+    Industry.boot()
+
+    await user.related('industries').createMany([
+      {
+        title: 'Industry 1',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 2',
+        text: 'Industry by Lookin',
+      },
+      {
+        title: 'Industry 3',
+        text: 'Industry by Adonis',
+      },
+    ])
+
+    const lookinIndustries = await user
+      .related('industries')
+      .query()
+      .filter({ text: 'Adonis' })
+      .exec()
+
+    assert.lengthOf(lookinIndustries, 1)
+  })
 })

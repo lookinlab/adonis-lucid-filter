@@ -15,7 +15,8 @@
   "exports": {
     ".": "./build/index.js",
     "./commands": "./build/commands/main.js",
-    "./types/*": "./build/src/types/*.js"
+    "./types/*": "./build/src/types/*.js",
+    "./lucid_filter_provider": "./build/providers/lucid_filter_provider.js"
   },
   "scripts": {
     "lint": "eslint .",

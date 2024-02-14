@@ -13,7 +13,7 @@ export async function configure(command: Configure) {
   const codemods = await command.createCodemods()
 
   await codemods.updateRcFile((rcFile) => {
-    // rcFile.addProvider('adonis-lucid-filter/licid_filter_provider')
+    rcFile.addProvider('adonis-lucid-filter/licid_filter_provider')
     rcFile.addCommand('adonis-lucid-filter/commands')
   })
 }
