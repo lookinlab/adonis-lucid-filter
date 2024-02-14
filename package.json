@@ -1,29 +1,79 @@
 {
   "name": "adonis-lucid-filter",
-  "version": "5.0.0",
   "description": "Addon for filtering AdonisJS Lucid ORM",
+  "version": "5.0.0",
   "engines": {
     "node": ">=20.6.0"
   },
   "main": "./build/index.js",
   "type": "module",
   "files": [
-    "build"
+    "build",
+    "!build/bin",
+    "!build/tests"
   ],
   "exports": {
     ".": "./build/index.js",
-    "./lucid_filter_provider": "./build/providers/lucid_filter_provider.js",
+    "./commands": "./build/commands/main.js",
     "./types/*": "./build/src/types/*.js"
   },
   "scripts": {
-    "lint": "eslint . --ext=.ts",
-    "pretest": "npm run lint",
-    "test": "node japaFile.js",
-    "clean": "rm -rf build",
-    "compile": "npm run lint && npm run clean && tsc && npm run copy:files",
-    "copy:files": "copyfiles \"templates/*.txt\" build",
+    "lint": "eslint .",
+    "clean": "del-cli build",
+    "precompile": "npm run lint && npm run clean",
+    "postcompile": "npm run copy:stubs && npm run index:commands",
+    "compile": "tsup-node && tsc --emitDeclarationOnly --declaration",
     "build": "npm run compile",
-    "prepublishOnly": "npm run build"
+    "copy:stubs": "copyfiles --up=1 \"stubs/**/**/*.stub\" build",
+    "index:commands": "adonis-kit index build/commands",
+    "prepublishOnly": "npm run build",
+    "quick:test": "NODE_DEBUG=\"adonis-lucid-filter\" node --enable-source-maps --loader=ts-node/esm bin/test.ts",
+    "test": "c8 npm run quick:test"
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^7.1.1",
+    "@adonisjs/core": "^6.2.3",
+    "@adonisjs/eslint-config": "^1.2.1",
+    "@adonisjs/lucid": "^20.1.0",
+    "@adonisjs/prettier-config": "^1.2.1",
+    "@adonisjs/tsconfig": "^1.2.1",
+    "@japa/assert": "^2.1.0",
+    "@japa/expect-type": "^2.0.1",
+    "@japa/file-system": "^2.2.0",
+    "@japa/runner": "^3.1.1",
+    "@japa/snapshot": "^2.0.4",
+    "@swc/core": "^1.4.1",
+    "@types/lodash": "^4.14.202",
+    "c8": "^9.1.0",
+    "copyfiles": "^2.4.1",
+    "del-cli": "^5.1.0",
+    "eslint": "^8.56.0",
+    "knex": "^3.1.0",
+    "lodash": "^4.17.21",
+    "luxon": "^3.4.4",
+    "reflect-metadata": "^0.2.1",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "type-fest": "^4.10.2"
+  },
+  "peerDependencies": {
+    "@adonisjs/core": "^6.2.3",
+    "@adonisjs/lucid": "^20.1.0",
+    "lodash": "^4.17.21"
+  },
+  "author": "LookinGit",
+  "license": "MIT",
+  "homepage": "https://github.com/lookinlab/adonis-lucid-filter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lookinlab/adonis-lucid-filter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
   },
   "keywords": [
     "adonisjs",
@@ -35,47 +85,37 @@
     "adonis-filter",
     "adonis-lucid-filter"
   ],
-  "author": "LookinGit",
-  "license": "MIT",
-  "homepage": "https://github.com/lookinlab/adonis-lucid-filter#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/lookinlab/adonis-lucid-filter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/lookinlab/adonis-lucid-filter/issues"
-  },
-  "devDependencies": {
-    "@adonisjs/core": "^6.2.3",
-    "@adonisjs/eslint-config": "^1.2.1",
-    "@adonisjs/lucid": "^20.1.0",
-    "@adonisjs/tsconfig": "^1.2.1",
-    "@types/lodash": "^4.14.202",
-    "copyfiles": "^2.4.1",
-    "eslint": "^8.56.0",
-    "knex": "^3.1.0",
-    "lodash": "^4.17.21",
-    "reflect-metadata": "^0.2.1",
-    "sqlite3": "^5.1.7",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
-  },
   "directories": {
     "test": "test"
-  },
-  "peerDependencies": {
-    "@adonisjs/core": "^6.2.3",
-    "@adonisjs/lucid": "^20.1.0",
-    "lodash": "^4.17.21"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/package"
   },
+  "prettier": "@adonisjs/prettier-config",
   "publishConfig": {
     "access": "public",
     "tag": "latest"
   },
-  "dependencies": {
-    "type-fest": "^4.10.2"
+  "c8": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "tests/**",
+      "bin/**"
+    ]
+  },
+  "tsup": {
+    "entry": [
+      "index.ts",
+      "commands/make_model_filter.ts"
+    ],
+    "outDir": "./build",
+    "clean": true,
+    "format": "esm",
+    "dts": false,
+    "sourcemap": true,
+    "target": "esnext"
   }
 }

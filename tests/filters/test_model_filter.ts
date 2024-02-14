@@ -1,46 +1,46 @@
 /*
  * adonis-lucid-filter
  *
- * (c) Lookin Anton <lookin@lookinlab.ru>
+ * (c) Lookin Anton <alf@lookinlab.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-import { BaseModelFilter } from '../../src/BaseModel'
+import { BaseModelFilter } from '../../src/base_model.js'
 
 export default class TestModelFilter extends BaseModelFilter {
-  public static blacklist: string[] = ['email', 'password']
+  static blacklist: string[] = ['email', 'password']
 
-  public username (username: string) {
+  username(username: string) {
     this.$query.where('username', 'LIKE', `%${username}%`)
   }
 
-  public email (email: string) {
+  email(email: string) {
     this.$query.where('email', 'LIKE', `%${email}%`)
   }
 
-  public company (id: number) {
+  company(id: number) {
     this.$query.where('company_id', +id)
   }
 
-  public companyId (id: number) {
+  companyId(id: number) {
     this.$query.where('company_id', +id)
   }
 
-  public isAdmin (flag: boolean) {
+  isAdmin(flag: boolean) {
     this.$query.where('is_admin', flag)
   }
 
-  public title (value: string): void {
+  title(value: string): void {
     this.$query.where('title', 'LIKE', `%${value}%`)
   }
 
-  public text (value: string): void {
+  text(value: string): void {
     this.$query.where('text', 'LIKE', `%${value}%`)
   }
 
-  public mobilePhone (value: string) {
+  mobilePhone(value: string) {
     console.log(value)
   }
 }

@@ -1,33 +1,19 @@
 /*
  * adonis-lucid-filter
  *
- * (c) Lookin Anton <lookin@lookinlab.ru>
+ * (c) Lookin Anton <alf@lookinlab.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-import test from 'japa'
-import { setup, cleanup, setupApplication, getBaseModel } from '../test-helpers'
-import BaseModelFilter from '../src/BaseModel'
-import TestModelFilter from '../test-helpers/filters/TestModelFilter'
-import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import { LucidModel } from '@ioc:Adonis/Lucid/Orm'
+import { test } from '@japa/runner'
+import { BaseModel } from '@adonisjs/lucid/orm'
+import BaseModelFilter from '../../src/base_model.js'
+import TestModelFilter from '../filters/test_model_filter.js'
 
-test.group('ModelFilter', (group) => {
-  let app: ApplicationContract
-  let BaseModel: LucidModel
-
-  group.before(async () => {
-    app = await setupApplication()
-    BaseModel = getBaseModel(app)
-
-    await setup()
-  })
-
-  group.after(() => cleanup())
-
-  test('remove empty input', (assert) => {
+test.group('ModelFilter', () => {
+  test('remove empty input', async ({ assert }) => {
     const filteredInput = TestModelFilter.removeEmptyInput({
       username: 'Tony',
       email: '',
@@ -38,12 +24,14 @@ test.group('ModelFilter', (group) => {
     })
 
     for (const key in filteredInput) {
-      assert.notStrictEqual(filteredInput[key], '')
-      assert.notStrictEqual(filteredInput[key], undefined)
+      const keyName = key as keyof typeof filteredInput
+
+      assert.notStrictEqual(filteredInput[keyName], '')
+      assert.notStrictEqual(filteredInput[keyName], undefined)
     }
   })
 
-  test('get filter method name in camelCase and without _id', (assert) => {
+  test('get filter method name in camelCase and without _id', ({ assert }) => {
     class User extends BaseModel {}
     User.boot()
 
@@ -67,16 +55,17 @@ test.group('ModelFilter', (group) => {
     }
 
     for (const key in standard) {
-      assert.strictEqual(filter.$getFilterMethod(key), standard[key])
+      const keyName = key as keyof typeof standard
+      assert.strictEqual(filter.$getFilterMethod(key), standard[keyName])
     }
   })
 
-  test('get filter method name in camelCase and with _id', (assert) => {
+  test('get filter method name in camelCase and with _id', ({ assert }) => {
     class User extends BaseModel {}
     User.boot()
 
     class UserFilter extends BaseModelFilter {
-      public static dropId: boolean = false
+      static dropId: boolean = false
     }
 
     const userFilter = new UserFilter(User.query(), {})
@@ -84,7 +73,7 @@ test.group('ModelFilter', (group) => {
     assert.strictEqual(userFilter.$getFilterMethod('companyId'), 'companyId')
   })
 
-  test('whitelist method and method is callable', (assert) => {
+  test('whitelist method and method is callable', ({ assert }) => {
     class User extends BaseModel {}
     User.boot()
 

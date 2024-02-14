@@ -8,10 +8,9 @@
  */
 
 import camelCase from 'lodash/camelCase.js'
-import { LucidFilter, LucidFilterContract } from './types/filter.js'
-import { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model'
+import type { LucidFilter, LucidFilterContract } from './types/filter.js'
 
-function StaticImplements<T> () {
+function StaticImplements<T>() {
   return (_t: T) => {}
 }
 
@@ -23,24 +22,24 @@ function StaticImplements<T> () {
  */
 @StaticImplements<LucidFilterContract>()
 export class BaseModelFilter implements LucidFilter {
-  public ['constructor']: typeof BaseModelFilter
+  declare ['constructor']: typeof BaseModelFilter
 
-  public static blacklist: string[] = []
-  public static dropId: boolean = true
-  public static camelCase: boolean = true
+  static blacklist: string[] = []
+  static dropId: boolean = true
+  static camelCase: boolean = true
 
-  public setup? ($query: any): void
-  public $blacklist: string[]
+  declare setup?: ($query: any) => void
+  declare $blacklist: string[]
 
-  constructor (
-    public $query: ModelQueryBuilderContract<LucidModel, LucidRow>,
+  constructor(
+    public $query: any,
     public $input: object
   ) {
     this.$input = BaseModelFilter.removeEmptyInput(this.$input)
     this.$blacklist = this.constructor.blacklist
   }
 
-  public handle (): any {
+  handle(): any {
     if (this.setup && typeof this.setup === 'function') {
       this.setup(this.$query)
     }
@@ -49,51 +48,58 @@ export class BaseModelFilter implements LucidFilter {
     return this.$query
   }
 
-  public whitelistMethod (method): boolean {
+  whitelistMethod(method: string): boolean {
     const index = this.$blacklist.indexOf(method)
-    if (~index) {
-      this.$blacklist.splice(index, 1)
-    }
 
-    return !!~index
+    const isBlacklisted = index !== -1
+    if (isBlacklisted) this.$blacklist.splice(index, 1)
+
+    return isBlacklisted
   }
 
-  public $filterByInput (): void {
+  $filterByInput(): void {
     for (const key in this.$input) {
       const method = this.$getFilterMethod(key)
-      const value = this.$input[key]
+
+      const keyName = key as keyof typeof this.$input
+      const value: unknown = this.$input[keyName]
 
       if (this.$methodIsCallable(method)) {
-        this[method](value)
+        ;(this[method as keyof this] as Function)(value)
       }
     }
   }
 
-  public $getFilterMethod (key: string): string {
+  $getFilterMethod(key: string): string {
     const methodName = this.constructor.dropId ? key.replace(/^(.*)(_id|Id)$/, '$1') : key
     return this.constructor.camelCase ? camelCase(methodName) : methodName
   }
 
-  public static removeEmptyInput (input: object): object {
+  static removeEmptyInput(input: object): object {
     const filteredInput = {}
 
-    for (let key in input) {
-      const value = input[key]
+    for (const key in input) {
+      const keyName = key as keyof typeof input
+      const value = input[keyName]
 
       if (value !== '' && value !== null && value !== undefined) {
-        filteredInput[key] = value
+        filteredInput[keyName] = value
       }
     }
     return filteredInput
   }
 
-  public $methodIsCallable (method: string): boolean {
-    return !!this[method] &&
-      typeof this[method] === 'function' &&
+  $methodIsCallable(method: string): boolean {
+    const methodKey = method as keyof this
+
+    return (
+      !!this[methodKey] &&
+      typeof this[methodKey] === 'function' &&
       !this.$methodIsBlacklisted(method)
+    )
   }
 
-  public $methodIsBlacklisted (method: string): boolean {
+  $methodIsBlacklisted(method: string): boolean {
     return this.$blacklist.includes(method)
   }
 }
