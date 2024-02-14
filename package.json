@@ -19,7 +19,8 @@
   "exports": {
     ".": "./build/index.js",
     "./commands": "./build/commands/main.js",
-    "./types/*": "./build/src/types/*.js"
+    "./types/*": "./build/src/types/*.js",
+    "./bindings": "./build/src/bindings/model_query_builder.js"
   },
   "scripts": {
     "lint": "eslint .",
