@@ -11,7 +11,7 @@ import { test } from '@japa/runner'
 import { AceFactory } from '@adonisjs/core/factories'
 import MakeFilter from '../../commands/make_filter.js'
 
-test.group('MakeModelFilter', () => {
+test.group('MakeFilter', () => {
   test('make a model inside the default directory', async ({ assert, fs }) => {
     const ace = await new AceFactory().make(fs.baseUrl, { importer: () => {} })
     await ace.app.init()
