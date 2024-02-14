@@ -8,9 +8,14 @@
   "main": "./build/index.js",
   "type": "module",
   "files": [
-    "build",
-    "!build/bin",
-    "!build/tests"
+    "build/commands",
+    "build/providers",
+    "build/src",
+    "build/stubs",
+    "build/configure.d.ts",
+    "build/configure.js",
+    "build/index.d.ts",
+    "build/index.js"
   ],
   "exports": {
     ".": "./build/index.js",
@@ -25,7 +30,7 @@
     "postcompile": "npm run copy:stubs && npm run index:commands",
     "compile": "tsup-node && tsc --emitDeclarationOnly --declaration",
     "build": "npm run compile",
-    "copy:stubs": "copyfiles --up=1 \"stubs/**/**/*.stub\" build",
+    "copy:stubs": "copyfiles \"stubs/**/**/*.stub\" --up=\"1\" build",
     "index:commands": "adonis-kit index build/commands",
     "quick:test": "NODE_DEBUG=\"adonis-lucid-filter\" node --enable-source-maps --loader=ts-node/esm bin/test.ts",
     "pretest": "npm run lint",
