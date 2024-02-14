@@ -27,7 +27,6 @@
     "build": "npm run compile",
     "copy:stubs": "copyfiles --up=1 \"stubs/**/**/*.stub\" build",
     "index:commands": "adonis-kit index build/commands",
-    "prepublishOnly": "npm run build",
     "quick:test": "NODE_DEBUG=\"adonis-lucid-filter\" node --enable-source-maps --loader=ts-node/esm bin/test.ts",
     "pretest": "npm run lint",
     "test": "c8 npm run quick:test",
