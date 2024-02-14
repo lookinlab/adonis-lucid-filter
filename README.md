@@ -1,5 +1,4 @@
 # Adonis Lucid Filter
-> WIP for AdonisJS v6
 
 [![npm-image]][npm-url] [![license-image]][license-url] [![typescript-image]][typescript-url]
 
