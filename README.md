@@ -266,7 +266,7 @@ export default class UsersController {
 
 ### Filtering relations
 
-For filtering relations of model may be use `.query().filter()` or scope `filtration`, example:
+For filtering relations of model may be use scope `filtration`, example:
 
 ```ts
 import type { HttpContext } from '@adonisjs/core/http'
@@ -283,13 +283,55 @@ export default class UserPostsController {
     return user.related('posts').query()
       .apply(scopes => scopes.filtration(request.qs()))
       .exec()
-    
-    // or
-    
+  }
+}
+```
+
+For filtering relations throuth `.query().filter()` method must be *extend* `ModelQueryBuilder` methods.
+> This is require file `providers/app_provider.ts`. More [about providers](https://docs.adonisjs.com/guides/service-providers)
+
+```ts
+// providers/app_provider.ts
+import type { ApplicationService } from '@adonisjs/core/types'
+import { extendModelQueryBuilder } from 'adonis-lucid-filter/bindings'
+
+export default class AppProvider {
+  constructor(protected app: ApplicationService) {}
+
+  /**
+   * Register bindings to the container
+   */
+  register() {}
+
+  /**
+   * The container bindings have booted
+   */
+  async boot() {
+    const { ModelQueryBuilder } = await import('@adonisjs/lucid/orm')
+    extendModelQueryBuilder(ModelQueryBuilder)
+  }
+}
+```
+
+Now may be use `.query().filter()`, example:
+
+```ts
+import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
+
+export default class UserPostsController {
+  /**
+   * Get a list posts of user
+   * GET /users/:user_id/posts
+   */
+  async index({ params, request }: HttpContext): Promise<Post[]> {
+    const user: User = await User.findOrFail(params.user_id)
+
     return user.related('posts').query().filter(request.qs()).exec()
   }
 }
 ```
+
 
 Documentation by [Query Scopes](https://lucid.adonisjs.com/docs/model-query-scopes)
 
