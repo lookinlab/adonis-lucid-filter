@@ -32,6 +32,7 @@
     "test": "c8 npm run quick:test",
     "typecheck": "tsc --noEmit",
     "version": "npm run build",
+    "prepublishOnly": "npm run build",
     "release": "np"
   },
   "devDependencies": {
