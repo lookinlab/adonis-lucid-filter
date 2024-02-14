@@ -113,11 +113,11 @@
   },
   "tsup": {
     "entry": [
-      "index.ts",
-      "src/types/*.ts",
-      "src/bindings/model_query_builder.ts",
-      "commands/make_filter.ts",
-      "providers/lucid_filter_provider.ts"
+      "./index.ts",
+      "./src/types/*.ts",
+      "./src/bindings/model_query_builder.ts",
+      "./commands/make_filter.ts",
+      "./providers/lucid_filter_provider.ts"
     ],
     "outDir": "./build",
     "clean": true,
