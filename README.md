@@ -97,7 +97,7 @@ node ace configure adonis-lucid-filter
 
 ## Usage
 
-Make sure to register the provider inside `adonisrc.ts` file.
+Make sure to register commands inside `adonisrc.ts` file.
 
 ```ts
 commands: [
@@ -287,6 +287,8 @@ export default class UserPostsController {
 }
 ```
 
+Documentation by [Query Scopes](https://lucid.adonisjs.com/docs/model-query-scopes)
+
 For filtering relations throuth `.query().filter()` method must be *extend* `ModelQueryBuilder` methods.
 > This is require file `providers/app_provider.ts`. More [about providers](https://docs.adonisjs.com/guides/service-providers)
 
@@ -331,9 +333,6 @@ export default class UserPostsController {
   }
 }
 ```
-
-
-Documentation by [Query Scopes](https://lucid.adonisjs.com/docs/model-query-scopes)
 
 **Note:** The relation model must be Filterable and `$filter` must be defined in it
 
