@@ -91,9 +91,6 @@
     "adonis-filter",
     "adonis-lucid-filter"
   ],
-  "directories": {
-    "test": "test"
-  },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/package"
   },
