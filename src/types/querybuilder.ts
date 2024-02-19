@@ -15,11 +15,11 @@ declare module '@adonisjs/lucid/types/model' {
     filtration: QueryScope<LucidModel, QueryScopeCallback>
   }
 
-  type ExcludeMethods<Type, Model> = {
-    [Method in keyof Type]: Model extends FilterableModel ? Type[Method] : never
+  type ExcludeFilterableMethods<Methods, Model> = {
+    [Method in keyof Methods]: Model extends FilterableModel ? Methods[Method] : never
   }
 
-  type FilterableModelMethods<Model extends LucidModel> = {
+  type FilterableMethods<Model extends LucidModel> = {
     filter<Filter extends LucidFilterContract = ReturnType<(FilterableModel & Model)['$filter']>>(
       input: InputObject<InstanceType<Filter>>,
       filter?: Filter
@@ -27,5 +27,5 @@ declare module '@adonisjs/lucid/types/model' {
   }
 
   export interface ModelQueryBuilderContract<Model extends LucidModel, Result = InstanceType<Model>>
-    extends ExcludeMethods<FilterableModelMethods<Model>, Model> {}
+    extends ExcludeFilterableMethods<FilterableMethods<Model>, Model> {}
 }
