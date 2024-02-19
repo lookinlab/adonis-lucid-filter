@@ -97,9 +97,13 @@ node ace configure adonis-lucid-filter
 
 ## Usage
 
-Make sure to register commands inside `adonisrc.ts` file.
+Make sure to register the provider and commands inside `adonisrc.ts` file.
 
 ```ts
+providers: [
+  // ...
+  () => import('adonis-lucid-filter/provider'),
+],
 commands: [
   // ...
   () => import('adonis-lucid-filter/commands')
@@ -112,10 +116,10 @@ commands: [
 You can create a model filter with the following ace command:
 
 ```bash
-node ace make:filter User
+node ace make:filter user
 ```
 
-Where `User` is the Lucid Model you are creating the filter for. This will create `app/models/filters/user_filter.js`
+Where `user` is the Lucid Model you are creating the filter for. This will create `app/models/filters/user_filter.js`
 
 ### Defining The Filter Logic
 Define the filter logic based on the camel cased input key passed to the `filter()` method.
@@ -266,7 +270,7 @@ export default class UsersController {
 
 ### Filtering relations
 
-For filtering relations of model may be use scope `filtration`, example:
+For filtering relations of model may be use `.query().filter()` or scope `filtration`, example:
 
 ```ts
 import type { HttpContext } from '@adonisjs/core/http'
@@ -283,58 +287,17 @@ export default class UserPostsController {
     return user.related('posts').query()
       .apply(scopes => scopes.filtration(request.qs()))
       .exec()
-  }
-}
-```
 
-Documentation by [Query Scopes](https://lucid.adonisjs.com/docs/model-query-scopes)
-
-For filtering relations throuth `.query().filter()` method must be *extend* `ModelQueryBuilder` methods.
-> This is require file `providers/app_provider.ts`. More [about providers](https://docs.adonisjs.com/guides/service-providers)
-
-```ts
-// providers/app_provider.ts
-import type { ApplicationService } from '@adonisjs/core/types'
-import { extendModelQueryBuilder } from 'adonis-lucid-filter/bindings'
-
-export default class AppProvider {
-  constructor(protected app: ApplicationService) {}
-
-  /**
-   * Register bindings to the container
-   */
-  register() {}
-
-  /**
-   * The container bindings have booted
-   */
-  async boot() {
-    const { ModelQueryBuilder } = await import('@adonisjs/lucid/orm')
-    extendModelQueryBuilder(ModelQueryBuilder)
-  }
-}
-```
-
-Now may be use `.query().filter()`, example:
-
-```ts
-import type { HttpContext } from '@adonisjs/core/http'
-import User from '#models/user'
-
-export default class UserPostsController {
-  /**
-   * Get a list posts of user
-   * GET /users/:user_id/posts
-   */
-  async index({ params, request }: HttpContext): Promise<Post[]> {
-    const user: User = await User.findOrFail(params.user_id)
+    // or
 
     return user.related('posts').query().filter(request.qs()).exec()
   }
 }
 ```
 
-**Note:** The relation model must be Filterable and `$filter` must be defined in it
+Documentation by [Query Scopes](https://lucid.adonisjs.com/docs/model-query-scopes)
+
+**Note:** The relation model must be `Filterable` and `$filter` must be defined in it
 
 [npm-image]: https://img.shields.io/npm/v/adonis-lucid-filter?logo=npm&style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/adonis-lucid-filter
