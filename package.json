@@ -16,7 +16,8 @@
     ".": "./build/index.js",
     "./commands": "./build/commands/main.js",
     "./types/*": "./build/src/types/*.js",
-    "./bindings": "./build/src/bindings/model_query_builder.js"
+    "./bindings": "./build/src/bindings/model_query_builder.js",
+    "./provider": "./build/providers/lucid_filter_provider.js"
   },
   "scripts": {
     "lint": "eslint .",
@@ -120,7 +121,8 @@
       "./index.ts",
       "./src/types/*.ts",
       "./src/bindings/model_query_builder.ts",
-      "./commands/make_filter.ts"
+      "./commands/make_filter.ts",
+      "./providers/lucid_filter_provider.ts"
     ],
     "outDir": "./build",
     "clean": true,
