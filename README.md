@@ -84,14 +84,17 @@ Make sure to install it using `npm`, `yarn` or `pnpm`.
 ```bash
 # npm
 npm i adonis-lucid-filter
-node ace configure adonis-lucid-filter
 
 # yarn
 yarn add adonis-lucid-filter
-node ace configure adonis-lucid-filter
 
 # pnpm
 pnpm add adonis-lucid-filter
+```
+
+After install call `configure`:
+
+```bash
 node ace configure adonis-lucid-filter
 ```
 
