@@ -43,4 +43,8 @@ export default class TestModelFilter extends BaseModelFilter {
   mobilePhone(value: string) {
     console.log(value)
   }
+
+  $select(value: string | string[]): void {
+    this.$query.select(Array.isArray(value) ? value : [value])
+  }
 }
