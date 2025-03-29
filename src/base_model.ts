@@ -72,7 +72,11 @@ export class BaseModelFilter implements LucidFilter {
 
   $getFilterMethod(key: string): string {
     const methodName = this.constructor.dropId ? key.replace(/^(.*)(_id|Id)$/, '$1') : key
-    return this.constructor.camelCase ? camelCase(methodName) : methodName
+    return this.constructor.camelCase
+      ? methodName.charAt(0) === '$'
+        ? `$${camelCase(methodName)}`
+        : camelCase(methodName)
+      : methodName
   }
 
   static removeEmptyInput(input: object): object {

@@ -89,6 +89,10 @@ test.group('BaseModelFilter', (group) => {
     const companyUsersWithoutId = await User.filter({ company: 2 }, TestModelFilter).exec()
     assert.lengthOf(companyUsers, 1)
     assert.lengthOf(companyUsersWithoutId, companyUsers.length)
+
+    const selected = await User.filter({ $select: ['username', 'email'] }, TestModelFilter).first()
+    assert.properties(selected!.toJSON(), ['username', 'email'])
+    assert.notAllProperties(selected!.toJSON(), ['isAdmin', 'companyId'])
   })
 
   test('filter model through filtration scope', async ({ assert }) => {

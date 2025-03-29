@@ -73,6 +73,18 @@ test.group('ModelFilter', () => {
     assert.strictEqual(userFilter.$getFilterMethod('companyId'), 'companyId')
   })
 
+  test('get filter method name starting with $', ({ assert }) => {
+    class User extends BaseModel {}
+    User.boot()
+
+    class UserFilter extends BaseModelFilter {
+      static dropId: boolean = false
+    }
+
+    const userFilter = new UserFilter(User.query(), {})
+    assert.strictEqual(userFilter.$getFilterMethod('$select'), '$select')
+  })
+
   test('whitelist method and method is callable', ({ assert }) => {
     class User extends BaseModel {}
     User.boot()
