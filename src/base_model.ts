@@ -36,7 +36,7 @@ export class BaseModelFilter implements LucidFilter {
     public $input: object
   ) {
     this.$input = BaseModelFilter.removeEmptyInput(this.$input)
-    this.$blacklist = this.constructor.blacklist
+    this.$blacklist = [...this.constructor.blacklist]
   }
 
   handle(): any {
